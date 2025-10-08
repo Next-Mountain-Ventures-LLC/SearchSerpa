@@ -26,7 +26,7 @@ export default function Services() {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            SEO Services That <span className="text-primary">Elevate</span> Your Business
+            Business Is Better At <span className="text-primary">The Top</span>
           </h2>
           <p className="text-lg text-muted-foreground">
             We focus exclusively on content-driven SEO strategies, providing targeted services that build lasting online authority.
