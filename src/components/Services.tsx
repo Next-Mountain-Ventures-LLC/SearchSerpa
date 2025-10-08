@@ -24,33 +24,13 @@ export default function Services() {
       </div>
       
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto mb-16">
-          <div className="text-center md:text-left">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Business Is Better At <span className="text-primary">The Top</span>
-            </h2>
-            <p className="text-lg text-muted-foreground mb-6">
-              Content-driven strategic SEO services that build lasting online authority.
-            </p>
-            <div className="bg-primary/10 rounded-lg p-5 border-l-4 border-primary">
-              <p className="text-xl font-bold mb-1">39.8%</p>
-              <p className="text-foreground/80">of all clicks go to the top organic Google search result</p>
-            </div>
-          </div>
-          
-          <div className="relative mx-auto md:mr-0 max-w-md">
-            <img 
-              src="https://images.unsplash.com/photo-1656554660452-c2dbe6eae387?w=600&h=400&auto=format&fit=crop&q=80" 
-              alt="Business professional holding tablet" 
-              className="rounded-lg shadow-lg"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 m-4 max-w-[80%] transform rotate-[-5deg]">
-                <p className="text-2xl font-bold text-primary mb-2">39.8%</p>
-                <p className="text-sm text-foreground font-medium">The top Google result gets 39.8% of all clicks</p>
-              </div>
-            </div>
-          </div>
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Business Is Better At <span className="text-primary">The Top</span>
+          </h2>
+          <p className="text-lg text-muted-foreground">
+            Content-driven strategic SEO services that build lasting online authority.
+          </p>
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
