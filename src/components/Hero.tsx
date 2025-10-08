@@ -64,7 +64,7 @@ export default function Hero() {
             <div className="text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start mb-4">
                 <MountainSnow className="h-8 w-8 text-primary mr-2" />
-                <span className="text-lg font-semibold text-secondary">SearchSerpas.com</span>
+                <span className="text-lg font-semibold text-secondary">SearchSerpa.com</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                 Your <span className="text-primary">Guides</span> to SEO Success
