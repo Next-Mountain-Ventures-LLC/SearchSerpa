@@ -44,7 +44,7 @@ export default function WhyDifferent() {
             <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
               <Trophy className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="text-2xl font-bold mb-4">Entrepreneur-Led Team</h3>
+            <h3 className="text-2xl font-bold mb-4">Experienced Entrepreneurial Team</h3>
             <p className="text-foreground/80 mb-4">
               Our team consists of successful entrepreneurs and business coaches with 11+ years of SEO experience. We understand business growth intimately because we've built our own successful companies.
             </p>
