@@ -29,7 +29,7 @@ export default function Services() {
             Business Is Better At <span className="text-primary">The Top</span>
           </h2>
           <p className="text-lg text-muted-foreground">
-            We deliver strategic content-driven SEO services that build lasting online authority.
+            We deliver strategic, content-driven SEO services that build lasting online authority.
           </p>
         </div>
         
