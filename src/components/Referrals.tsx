@@ -71,7 +71,7 @@ export default function Referrals() {
           <div className="inline-flex items-center justify-center bg-secondary p-4 rounded-lg text-white max-w-2xl">
             <Users className="h-5 w-5 mr-3 flex-shrink-0" />
             <p className="text-sm">
-              All referrals are vetted partners we've personally worked with. While SearchSerpas focuses solely on SEO excellence, we're happy to connect you with specialists for other needs.
+              All referrals are vetted partners we've personally worked with. While SearchSerpa focuses solely on SEO excellence, we're happy to connect you with specialists for other needs.
             </p>
           </div>
         </div>
