@@ -88,7 +88,7 @@ export default function WhyDifferent() {
         
         <div className="mt-16 text-center">
           <div className="inline-block bg-white/95 backdrop-blur rounded-lg px-8 py-6 shadow-lg">
-            <h3 className="text-xl font-bold mb-2">Ready to See the SearchSerpas Difference?</h3>
+            <h3 className="text-xl font-bold mb-2">Ready to See the SearchSerpa Difference?</h3>
             <p className="mb-4 text-foreground/80">
               Let us be your guide to SEO success with our focused expertise.
             </p>
