@@ -67,7 +67,7 @@ export default function Hero() {
                 <span className="text-lg font-semibold text-secondary">SearchSerpa.com</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                Your <span className="text-primary">Guides</span> to SEO Success
+                Your <span className="text-primary">Guide</span> to SEO Success
               </h1>
               <p className="text-xl text-foreground/80 mb-8">
                 We guide your business through the challenging terrain of SEO, so you can focus on what matters - growing your business.
