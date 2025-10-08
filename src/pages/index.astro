@@ -1,35 +1,19 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import ContactForm from '@/components/ContactForm';
-import { buttonVariants } from "@/components/ui/button";
+import Hero from '@/components/Hero';
+import Services from '@/components/Services';
+import WhyDifferent from '@/components/WhyDifferent';
+import Pricing from '@/components/Pricing';
+import Referrals from '@/components/Referrals';
 ---
 
 <BaseLayout
-  title="Example title"
-  description="Example description"
+  title="SearchSerpas | Your Guide to SEO Success"
+  description="SearchSerpas guides businesses through the challenging terrain of SEO with technical expertise and content publishing services to achieve sustainable growth."
 >
-  <section class="container grid items-center gap-6 pt-6 pb-8 md:py-10">
-    <div class="flex max-w-[980px] flex-col items-start gap-2">
-      <h1
-        class="text-3xl leading-tight font-extrabold tracking-tighter md:text-4xl"
-      >
-        Example header
-      </h1>
-      <p class="text-muted-foreground max-w-[700px] text-lg">
-        Example introductory text
-      </p>
-    </div>
-    <div class="flex gap-4">
-      <a
-        href="https://ui.shadcn.com"
-        target="_blank"
-        rel="noreferrer"
-        class={buttonVariants()}
-      >
-        Example link
-      </a>
-    </div>
-    <!-- KEEP ALL FORMS client:load !! DO NOT USE client:visible AS THIS CAUSES HYDRATION ISSUES!!-->
-    <ContactForm client:load />
-  </section>
+  <Hero client:load />
+  <Services client:visible />
+  <WhyDifferent client:visible />
+  <Pricing client:visible />
+  <Referrals client:visible />
 </BaseLayout>

@@ -10,20 +10,48 @@ import { buttonVariants } from "@/components/ui/button";
   >
     <div class="flex gap-6 md:gap-10">
       <a href="/" class="flex items-center space-x-2">
-        <span class="inline-block font-bold">Home</span>
+        <span class="inline-block font-bold text-xl text-foreground">Search<span class="text-primary">Serpas</span></span>
       </a>
     </div>
     <div class="flex flex-1 items-center justify-end space-x-4">
-      <nav class="flex items-center space-x-1">
+      <nav class="hidden md:flex items-center space-x-1">
         <a
-          href="https://github.com/"
-          target="_blank"
-          rel="noreferrer"
-          class={buttonVariants({ variant: 'ghost' })}
+          href="#services"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
-          Example link
+          Services
+        </a>
+        <a
+          href="#why-different"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+        >
+          Why We're Different
+        </a>
+        <a
+          href="#pricing"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+        >
+          Pricing
+        </a>
+        <a
+          href="#referrals"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+        >
+          Referrals
+        </a>
+        <a
+          href="#"
+          class={buttonVariants({ variant: 'default' })}
+        >
+          Get Free Audit
         </a>
       </nav>
+      <a
+        href="#"
+        class={`md:hidden ${buttonVariants({ variant: 'default', size: 'sm' })}`}
+      >
+        Get Free Audit
+      </a>
     </div>
   </div>
 </header>
