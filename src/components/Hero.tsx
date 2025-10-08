@@ -70,7 +70,7 @@ export default function Hero() {
                 Your <span className="text-primary">Guide</span> to SEO Success
               </h1>
               <p className="text-xl text-foreground/80 mb-8">
-                We guide your business through the shifting terrain of SEO, so you can focus on what matters - growing your business.
+                We guide your business through the shifting terrain of SEO, so you can focus on growing your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <Dialog>
