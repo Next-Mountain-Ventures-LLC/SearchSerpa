@@ -166,7 +166,7 @@ export default function Pricing() {
         <div className="mt-12 text-center max-w-3xl mx-auto">
           <div className="bg-white rounded-lg p-6 shadow-sm border border-border">
             <h4 className="text-lg font-bold mb-3">
-              All Packages Include:
+              Invest in your company.
             </h4>
             <p className="text-foreground/80 mb-4">
               Once our SEO work is published, it builds your domain authority forever. Unlike advertising, the content and link-building we implement continue working for you long-term.
