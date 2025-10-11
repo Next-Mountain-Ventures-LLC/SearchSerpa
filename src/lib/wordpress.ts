@@ -24,6 +24,7 @@ export interface WpPost {
     protected: boolean;
   };
   featured_media: number;
+  jetpack_featured_media_url?: string; // Jetpack specific field for featured image
   categories: number[];
   tags: number[];
   _embedded?: {
@@ -36,6 +37,12 @@ export interface WpPost {
             source_url: string;
           };
           large?: {
+            source_url: string;
+          };
+          medium?: {
+            source_url: string;
+          };
+          thumbnail?: {
             source_url: string;
           };
         };
@@ -140,28 +147,12 @@ async function fetchWithCache<T>(url: string): Promise<T> {
 }
 
 /**
- * Get SearchSerpa category ID (cached)
+ * Get SearchSerpa category ID (hardcoded based on API inspection)
  */
-let searchSerpaCategoryId: number | null = null;
+const SEARCHSERPA_CATEGORY_ID = 4; // Confirmed from API
 
 export async function getSearchSerpaCategoryId(): Promise<number> {
-  if (searchSerpaCategoryId !== null) {
-    return searchSerpaCategoryId;
-  }
-  
-  try {
-    const categories = await fetchWithCache<WpCategory[]>(`${WP_API_URL}/categories?slug=searchserpa`);
-    
-    if (categories && categories.length > 0) {
-      searchSerpaCategoryId = categories[0].id;
-      return searchSerpaCategoryId;
-    } else {
-      throw new Error('SearchSerpa category not found');
-    }
-  } catch (error) {
-    console.error('Error fetching SearchSerpa category ID:', error);
-    throw error;
-  }
+  return SEARCHSERPA_CATEGORY_ID;
 }
 
 /**
@@ -310,9 +301,15 @@ export async function getRelatedPosts(post: WpPost, limit: number = 3): Promise<
 }
 
 /**
- * Extract featured image URL from post _embedded data
+ * Extract featured image URL from post _embedded data or jetpack_featured_media_url
  */
 export function getFeaturedImageUrl(post: WpPost, size: 'thumbnail' | 'medium' | 'large' | 'full' = 'large'): string {
+  // First check if Jetpack featured media URL exists
+  if (post.jetpack_featured_media_url) {
+    return post.jetpack_featured_media_url;
+  }
+  
+  // Otherwise try to get from _embedded data
   if (!post._embedded || !post._embedded['wp:featuredmedia'] || !post._embedded['wp:featuredmedia'][0]) {
     return ''; // No featured image available
   }
@@ -326,8 +323,12 @@ export function getFeaturedImageUrl(post: WpPost, size: 'thumbnail' | 'medium' |
   // Try to get the requested size
   if (size === 'large' && media.media_details.sizes.large) {
     return media.media_details.sizes.large.source_url;
+  } else if (size === 'medium' && media.media_details.sizes.medium) {
+    return media.media_details.sizes.medium.source_url;
   } else if (size === 'medium' && media.media_details.sizes.medium_large) {
     return media.media_details.sizes.medium_large.source_url;
+  } else if (size === 'thumbnail' && media.media_details.sizes.thumbnail) {
+    return media.media_details.sizes.thumbnail.source_url;
   }
   
   // Fallback to full size if requested size isn't available

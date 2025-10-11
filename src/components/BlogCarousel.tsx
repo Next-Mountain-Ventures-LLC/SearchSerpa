@@ -36,15 +36,33 @@ export default function BlogCarousel() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Fetch posts from WordPress API
-        let fetchedPosts = await getSearchSerpaPosts({ perPage: 9 });
+        console.log('Fetching posts from WordPress API...');
+        // Fetch posts from WordPress API with SearchSerpa category (ID: 4)
+        let fetchedPosts = await getSearchSerpaPosts({ 
+          perPage: 12,  // Get more posts to ensure we have enough content
+          page: 1 
+        });
+        
+        console.log('API Response:', fetchedPosts);
         
         // Use fallback posts if API fails or returns empty
-        if (fetchedPosts.length === 0) {
+        if (!fetchedPosts || fetchedPosts.length === 0) {
+          console.log('No posts found, using fallbacks');
           fetchedPosts = getFallbackPosts();
         }
         
-        setPosts(fetchedPosts);
+        // Make sure we have valid post objects
+        const validPosts = fetchedPosts.filter(post => 
+          post && post.title && post.slug && post.date
+        );
+        
+        if (validPosts.length === 0) {
+          console.log('No valid posts found, using fallbacks');
+          setPosts(getFallbackPosts());
+        } else {
+          console.log(`Successfully loaded ${validPosts.length} posts`);
+          setPosts(validPosts);
+        }
       } catch (err) {
         console.error('Error fetching posts:', err);
         // Fallback to sample posts
@@ -102,7 +120,10 @@ export default function BlogCarousel() {
   }, [activeIndex]);
 
   const BlogPostCard = ({ post }: { post: WpPost }) => {
+    // Get featured image from Jetpack or embedded data
     const featuredImage = getFeaturedImageUrl(post, 'medium');
+    
+    // Format date
     const date = parseDate(post.date);
     
     // Extract excerpt and clean HTML tags
@@ -113,7 +134,8 @@ export default function BlogCarousel() {
     }
     
     // Extract title and truncate if needed
-    let title = post.title.rendered || '';
+    let title = post.title?.rendered || '';
+    title = title.replace(/<\/?[^>]+(>|$)/g, '').trim(); // Remove any HTML tags from title
     if (title.length > 60) {
       title = title.substring(0, 60) + '...';
     }
@@ -125,7 +147,7 @@ export default function BlogCarousel() {
           {featuredImage ? (
             <img 
               src={featuredImage} 
-              alt={post.title.rendered} 
+              alt={title || 'Blog post'} 
               className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             />
           ) : (
@@ -142,7 +164,9 @@ export default function BlogCarousel() {
             <time dateTime={post.date}>{date.formatted}</time>
           </div>
           
-          <h3 className="text-lg font-bold mb-3 line-clamp-2" dangerouslySetInnerHTML={{ __html: title }} />
+          <h3 className="text-lg font-bold mb-3 line-clamp-2">
+            {title}
+          </h3>
           
           <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
             {excerpt}

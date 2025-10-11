@@ -12,7 +12,9 @@ const postDate = post.date ? formatDate(post.date) : '';
 
 // Extract featured image if available
 let featuredImage = '';
-if (post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0]) {
+if (post.jetpack_featured_media_url) {
+  featuredImage = post.jetpack_featured_media_url;
+} else if (post._embedded && post._embedded['wp:featuredmedia'] && post._embedded['wp:featuredmedia'][0]) {
   featuredImage = post._embedded['wp:featuredmedia'][0].source_url;
 }
 
@@ -35,7 +37,7 @@ const ogImage = featuredImage ? new URL(featuredImage) : undefined;
 ---
 
 <BlogLayout 
-  title={`${post.title.rendered} | SearchSerpa Blog`}
+  title={`${post.title?.rendered || 'Blog Post'} | SearchSerpa Blog`}
   description={description}
   ogImage={ogImage}
   post={post}
@@ -87,7 +89,7 @@ const ogImage = featuredImage ? new URL(featuredImage) : undefined;
   
   <!-- Post content -->
   <article class="blog-content">
-    <div set:html={post.content.rendered} />
+    <div set:html={post.content?.rendered || 'No content available'} />
   </article>
   
   <!-- Tags -->
