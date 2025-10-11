@@ -44,7 +44,8 @@ export default function BlogCarousel() {
               rendered: "Discover how implementing strategic SEO techniques can dramatically increase visibility and customer acquisition for small businesses without breaking the marketing budget." 
             },
             date: new Date().toISOString(),
-            link: "https://blog.nxtmt.ventures",
+            slug: "how-seo-can-boost-your-small-business-growth",
+            link: "/blog/how-seo-can-boost-your-small-business-growth",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -61,7 +62,8 @@ export default function BlogCarousel() {
               rendered: "Learn why technical SEO is critical for your website's performance and how it affects your rankings in search engine results pages." 
             },
             date: new Date().toISOString(),
-            link: "https://blog.nxtmt.ventures",
+            slug: "technical-seo-the-foundation-of-online-success",
+            link: "/blog/technical-seo-the-foundation-of-online-success",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -78,7 +80,8 @@ export default function BlogCarousel() {
               rendered: "Explore how content marketing and SEO work together to build authority, drive traffic, and generate leads for your business." 
             },
             date: new Date().toISOString(),
-            link: "https://blog.nxtmt.ventures",
+            slug: "content-marketing-the-heart-of-modern-seo",
+            link: "/blog/content-marketing-the-heart-of-modern-seo",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -115,7 +118,19 @@ export default function BlogCarousel() {
               if (postsResponse.ok) {
                 const postsData = await postsResponse.json();
                 if (postsData && postsData.length > 0) {
-                  setPosts(postsData);
+                  // Transform WordPress posts to use internal links
+                  const transformedPosts = postsData.map((post: any) => {
+                    // Extract the slug from the WordPress post if available, or generate one from title
+                    const slug = post.slug || titleToSlug(stripHtml(post.title.rendered));
+                    
+                    return {
+                      ...post,
+                      // Override the external link with our internal blog path
+                      link: `/blog/${slug}`
+                    };
+                  });
+                  
+                  setPosts(transformedPosts);
                   setLoading(false);
                   return; // Exit early if we have real posts
                 }
@@ -152,6 +167,14 @@ export default function BlogCarousel() {
     const temp = document.createElement('div');
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || '';
+  };
+  
+  // Helper to convert WordPress title to slug
+  const titleToSlug = (title: string): string => {
+    // Convert title to lowercase, remove special chars, replace spaces with dashes
+    return title.toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/\s+/g, '-');
   };
 
   if (loading) {
@@ -259,8 +282,6 @@ export default function BlogCarousel() {
                         </div>
                         <a 
                           href={post.link}
-                          target="_blank"
-                          rel="noreferrer"
                           className="text-sm text-primary font-medium hover:underline"
                         >
                           Read More
@@ -279,9 +300,7 @@ export default function BlogCarousel() {
           
           <div className="mt-10 text-center">
             <a 
-              href="https://blog.nxtmt.ventures" 
-              target="_blank" 
-              rel="noreferrer"
+              href="/blog" 
               className="inline-flex items-center px-6 py-3 rounded-md bg-primary text-white hover:bg-primary/90 transition-colors"
             >
               View All Articles <ChevronRight className="ml-2 h-4 w-4" />

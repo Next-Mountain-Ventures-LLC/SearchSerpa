@@ -1,0 +1,123 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, ArrowRight, Newspaper } from "lucide-react";
+
+// This will be replaced with actual API call in getStaticProps
+const fallbackPosts = [
+  {
+    id: 1,
+    slug: "how-seo-can-boost-your-small-business-growth",
+    title: "How SEO Can Boost Your Small Business Growth",
+    excerpt: "Discover how implementing strategic SEO techniques can dramatically increase visibility and customer acquisition for small businesses without breaking the marketing budget.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: 2,
+    slug: "technical-seo-the-foundation-of-online-success",
+    title: "Technical SEO: The Foundation of Online Success",
+    excerpt: "Learn why technical SEO is critical for your website's performance and how it affects your rankings in search engine results pages.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: 3,
+    slug: "content-marketing-the-heart-of-modern-seo",
+    title: "Content Marketing: The Heart of Modern SEO",
+    excerpt: "Explore how content marketing and SEO work together to build authority, drive traffic, and generate leads for your business.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1517842645767-c639042777db?w=800&h=400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: 4,
+    slug: "local-seo-strategies-for-small-businesses",
+    title: "Local SEO Strategies for Small Businesses",
+    excerpt: "Discover proven tactics to improve your local search visibility and attract more customers from your immediate geographic area.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1578091072400-8d84a7a29724?w=800&h=400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: 5,
+    slug: "understanding-search-intent-for-better-rankings",
+    title: "Understanding Search Intent for Better Rankings",
+    excerpt: "Learn how to identify and match user search intent to create content that ranks higher and converts better.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1649150849645-92fba77775a0?w=800&h=400&auto=format&fit=crop&q=80",
+  },
+  {
+    id: 6,
+    slug: "measuring-seo-success-beyond-rankings",
+    title: "Measuring SEO Success Beyond Rankings",
+    excerpt: "Explore the KPIs and metrics that truly matter when evaluating the effectiveness of your SEO strategy.",
+    date: new Date().toISOString(),
+    featuredImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&auto=format&fit=crop&q=80",
+  }
+];
+
+// Format date
+function formatDate(dateString: string) {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString('en-US', options);
+}
+
+// In the future, we would fetch posts from WordPress API here
+const posts = fallbackPosts;
+---
+
+<BaseLayout 
+  title="SearchSerpa Blog | SEO Tips & Strategies"
+  description="Discover the latest insights, strategies, and best practices for SEO, content marketing, and online visibility from the SearchSerpa team."
+>
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="container mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center justify-center bg-primary/10 px-4 py-1.5 rounded-full text-primary font-medium text-sm mb-4">
+          <Newspaper className="h-4 w-4 mr-2" />
+          <span>SearchSerpa Blog</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          SEO Knowledge & <span class="text-primary">Insights</span>
+        </h1>
+        <p class="text-xl text-muted-foreground">
+          Expert guidance to help your business climb to the top of search results
+        </p>
+      </div>
+
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="group">
+            <Card class="h-full flex flex-col transition-shadow duration-300 hover:shadow-lg">
+              <div class="aspect-video w-full overflow-hidden rounded-t-lg">
+                <img
+                  src={post.featuredImage}
+                  alt={post.title}
+                  class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+              <CardHeader class="pb-2 pt-4">
+                <CardTitle class="line-clamp-2 text-xl group-hover:text-primary transition-colors duration-300">
+                  {post.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class="flex-grow">
+                <p class="line-clamp-3 text-muted-foreground">
+                  {post.excerpt}
+                </p>
+              </CardContent>
+              <CardFooter class="border-t pt-4 flex justify-between items-center">
+                <div class="flex items-center text-sm text-muted-foreground">
+                  <Calendar className="h-3 w-3 mr-1" />
+                  <span>{formatDate(post.date)}</span>
+                </div>
+                <div class="text-sm text-primary font-medium inline-flex items-center group-hover:underline">
+                  Read Article <ArrowRight className="ml-1 h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </CardFooter>
+            </Card>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
