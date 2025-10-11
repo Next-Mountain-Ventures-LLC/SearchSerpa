@@ -2,40 +2,52 @@
 import BlogLayout from "@/layouts/BlogLayout.astro";
 import { getTags, getSearchSerpaPosts, getFeaturedImageUrl, formatDate, getFallbackPosts } from "@/lib/wordpress";
 
-export async function getStaticPaths() {
-  let tags = [];
-  
-  try {
-    tags = await getTags();
-  } catch (error) {
-    console.error("Error fetching tags:", error);
-  }
-  
-  return tags.map((tag) => ({
-    params: { slug: tag.slug },
-    props: { tag }
-  }));
-}
+export const prerender = false;
 
-const { tag } = Astro.props;
+const { slug } = Astro.params;
+
+let tag = null;
 let posts = [];
 
 try {
-  // Fetch all SearchSerpa posts first
-  const allPosts = await getSearchSerpaPosts({ perPage: 100 });
+  // Fetch all tags
+  const tags = await getTags();
   
-  // Filter posts that have the current tag
-  posts = allPosts.filter(post => {
-    if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][1]) {
-      return false;
-    }
+  // Find the requested tag
+  tag = tags.find(t => t.slug === slug);
+  
+  if (tag) {
+    // Fetch SearchSerpa posts
+    const allPosts = await getSearchSerpaPosts({ perPage: 100 });
     
-    // Check if post has the current tag
-    return post._embedded['wp:term'][1].some(t => t.id === tag.id);
-  });
+    // Filter posts with this tag
+    posts = allPosts.filter(post => {
+      if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][1]) {
+        return false;
+      }
+      
+      return post._embedded['wp:term'][1].some(t => t.slug === slug);
+    });
+  }
 } catch (error) {
-  console.error("Error fetching posts for tag:", error);
-  posts = getFallbackPosts();
+  console.error("Error fetching tag or posts:", error);
+}
+
+// If no tag found or API error, use fallback
+if (!tag || posts.length === 0) {
+  // Use fallback tag
+  tag = {
+    id: 0,
+    name: slug?.charAt(0).toUpperCase() + slug?.slice(1) || "Tag",
+    description: "",
+    count: 0,
+    slug: slug || "",
+    taxonomy: "post_tag"
+  };
+  
+  // Use fallback posts
+  const fallbackPosts = getFallbackPosts();
+  posts = fallbackPosts;
 }
 
 // Sort posts by date (newest first)

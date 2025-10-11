@@ -1,0 +1,58 @@
+---
+import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
+import { getPostBySlug, getSearchSerpaPosts, getFallbackPosts } from "@/lib/wordpress";
+import type { WpPost } from "@/lib/wordpress";
+
+export const prerender = false; // Important: This makes the page server-rendered (live)
+
+// Directly get the slug from the URL - this allows handling of full WordPress permalinks
+const { slug } = Astro.params;
+
+// Extract the actual slug from URL paths like "YYYY/MM/DD/post-name"
+const extractPostSlug = (path: string | undefined): string => {
+  if (!path) return '';
+  const parts = path.split('/').filter(Boolean);
+  return parts[parts.length - 1]; // Get the last part of the URL
+};
+
+const postSlug = extractPostSlug(slug);
+
+// Directly fetch the post
+let post: WpPost | null = null;
+let error: string | null = null;
+
+try {
+  // Try to fetch the post by slug
+  post = await getPostBySlug(postSlug);
+  
+  if (!post) {
+    console.error(`Post with slug "${postSlug}" not found. Using fallback content.`);
+    
+    // Try to find a matching post in fallbacks
+    const fallbackPosts = getFallbackPosts();
+    post = fallbackPosts.find(p => p.slug === postSlug) || null;
+    
+    if (!post) {
+      error = "Post not found";
+    }
+  }
+} catch (e) {
+  console.error("Error fetching post:", e);
+  error = "Error loading post content";
+}
+
+// Redirect to 404 if post not found
+if (!post) {
+  return Astro.redirect("/404");
+}
+---
+
+{error ? (
+  <div class="container py-20 text-center">
+    <h1 class="text-3xl font-bold mb-4">Error Loading Post</h1>
+    <p>{error}</p>
+    <a href="/blog" class="inline-block mt-6 text-primary hover:underline">Back to Blog</a>
+  </div>
+) : (
+  <BlogPostLayout post={post} />
+)}

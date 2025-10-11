@@ -2,6 +2,8 @@
 import BlogLayout from "@/layouts/BlogLayout.astro";
 import { getSearchSerpaPosts, getCategories, getTags, getFeaturedImageUrl, formatDate, getFallbackPosts } from "@/lib/wordpress";
 
+export const prerender = false;
+
 // Fetch blog posts from WordPress API with SearchSerpa category
 let posts = [];
 let categories = [];
