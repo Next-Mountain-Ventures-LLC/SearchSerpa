@@ -2,6 +2,21 @@
 import { buttonVariants } from "@/components/ui/button";
 ---
 
+<script>
+  // Add event listeners for audit buttons
+  document.addEventListener('DOMContentLoaded', () => {
+    // Function to open the audit dialog
+    const openAuditDialog = () => {
+      // Dispatch a custom event that the React components can listen for
+      document.dispatchEvent(new CustomEvent('openAuditDialog'));
+    };
+
+    // Add event listeners to all audit buttons
+    document.getElementById('nav-audit-btn')?.addEventListener('click', openAuditDialog);
+    document.getElementById('mobile-audit-btn')?.addEventListener('click', openAuditDialog);
+  });
+</script>
+
 <header
   class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
 >
@@ -39,19 +54,19 @@ import { buttonVariants } from "@/components/ui/button";
         >
           Referrals
         </a>
-        <a
-          href="#"
+        <button
+          id="nav-audit-btn"
           class={buttonVariants({ variant: 'default' })}
         >
           Get Free Audit
-        </a>
+        </button>
       </nav>
-      <a
-        href="#"
+      <button
+        id="mobile-audit-btn"
         class={`md:hidden ${buttonVariants({ variant: 'default', size: 'sm' })}`}
       >
         Get Free Audit
-      </a>
+      </button>
     </div>
   </div>
 </header>

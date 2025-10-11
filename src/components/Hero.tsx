@@ -1,45 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { MountainSnow, Compass, SearchCheck, ArrowRight } from "lucide-react";
+import AuditDialog, { openAuditDialog } from "./AuditDialog";
 
-interface SiteAuditFormProps {
-  formUrl: string;
-}
-
-const SiteAuditForm = ({ formUrl }: SiteAuditFormProps) => {
-  return (
-    <div className="text-center">
-      <div className="flex justify-center mb-6">
-        <SearchCheck className="h-16 w-16 text-primary" />
-      </div>
-      <h2 className="text-2xl font-bold mb-3">Get Your Free SEO Site Audit</h2>
-      <p className="mb-6 text-muted-foreground">
-        We'll analyze your site and deliver a comprehensive report within the same business day if ordered before 3 PM CST.
-      </p>
-      <Button className="w-full" onClick={() => window.open(formUrl, '_blank')}>
-        Request Your Free Audit <ArrowRight className="ml-2 h-4 w-4" />
-      </Button>
-      <p className="mt-4 text-sm text-muted-foreground">
-        You'll receive a detailed PDF report and book a call with your Search Serpa to review findings.
-      </p>
-    </div>
-  );
-};
+// SiteAuditForm moved to AuditDialog.tsx
 
 export default function Hero() {
-  const [showPopup, setShowPopup] = useState(false);
-  
-  // URL to be replaced with actual Bloom.io form URL
-  const formUrl = "#";
-  
+  // Register event listener for audit dialog
   useEffect(() => {
-    // Show popup after 15 seconds
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 15000);
+    // Listen for custom events to open the audit dialog
+    const handleOpenAuditDialog = () => openAuditDialog();
+    document.addEventListener('openAuditDialog', handleOpenAuditDialog);
     
-    return () => clearTimeout(timer);
+    // Cleanup
+    return () => {
+      document.removeEventListener('openAuditDialog', handleOpenAuditDialog);
+    };
   }, []);
   
   return (
@@ -73,18 +50,11 @@ export default function Hero() {
                 We guide your business through the shifting terrain of SEO, so you can focus on growing your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button size="lg" className="text-base">
-                      Get Free Site Audit
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-md">
-                    <SiteAuditForm formUrl={formUrl} />
-                  </DialogContent>
-                </Dialog>
+                <Button size="lg" className="text-base" onClick={openAuditDialog}>
+                  Get Free Site Audit
+                </Button>
                 
-                <Button size="lg" variant="outline" className="text-base" onClick={() => window.open(formUrl, '_blank')}>
+                <Button size="lg" variant="outline" className="text-base" onClick={() => window.location.href = "#services"}>
                   View Our Services <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </div>
@@ -133,12 +103,8 @@ export default function Hero() {
         </div>
       </section>
       
-      {/* Popup for site audit */}
-      <Dialog open={showPopup} onOpenChange={setShowPopup}>
-        <DialogContent className="sm:max-w-md">
-          <SiteAuditForm formUrl={formUrl} />
-        </DialogContent>
-      </Dialog>
+      {/* Audit dialog is now a separate component */}
+      <AuditDialog />
     </>
   );
 }

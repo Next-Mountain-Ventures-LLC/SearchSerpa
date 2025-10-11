@@ -1,4 +1,5 @@
 import React from 'react';
+import { openAuditDialog } from './AuditDialog';
 import { FileCode, Newspaper, Search, Route, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -141,8 +142,8 @@ export default function Services() {
           <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
             Our focused approach means we deliver exceptional results in the areas that matter most to your business growth.
           </p>
-          <Button size="lg" className="text-base">
-            See Our Packages <Route className="ml-2 h-4 w-4" />
+          <Button size="lg" className="text-base" onClick={() => openAuditDialog()}>
+            Get Free Site Audit <Search className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>
