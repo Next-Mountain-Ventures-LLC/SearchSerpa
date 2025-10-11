@@ -1,0 +1,131 @@
+---
+import BlogLayout from "@/layouts/BlogLayout.astro";
+import { getCategories, getSearchSerpaPosts, getFeaturedImageUrl, formatDate, getFallbackPosts } from "@/lib/wordpress";
+
+export async function getStaticPaths() {
+  let categories = [];
+  
+  try {
+    categories = await getCategories();
+    // Filter out SearchSerpa category as requested
+    categories = categories.filter(cat => cat.slug !== 'searchserpa');
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+  
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.props;
+let posts = [];
+
+try {
+  // Fetch all SearchSerpa posts first
+  const allPosts = await getSearchSerpaPosts({ perPage: 100 });
+  
+  // Filter posts that have the current category
+  posts = allPosts.filter(post => {
+    if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][0]) {
+      return false;
+    }
+    
+    // Check if post has the current category
+    return post._embedded['wp:term'][0].some(cat => cat.id === category.id);
+  });
+} catch (error) {
+  console.error("Error fetching posts for category:", error);
+  posts = getFallbackPosts();
+}
+
+// Sort posts by date (newest first)
+posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BlogLayout 
+  title={`${category.name} | SearchSerpa Blog`}
+  description={`Browse all posts in the ${category.name} category from SearchSerpa's SEO experts.`}
+>
+  <!-- Category Header -->
+  <div class="max-w-3xl mb-12">
+    <h1 class="text-3xl md:text-4xl font-bold mb-4">
+      Category: <span class="text-primary">{category.name}</span>
+    </h1>
+    {category.description && (
+      <p class="text-lg text-muted-foreground">{category.description}</p>
+    )}
+  </div>
+  
+  <!-- Post Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+    {posts.length > 0 ? posts.map((post) => {
+      // Get featured image if available
+      const featuredImage = getFeaturedImageUrl(post, 'medium');
+      const postDate = formatDate(post.date);
+      
+      // Extract excerpt and clean HTML tags
+      let excerpt = post.excerpt?.rendered || '';
+      excerpt = excerpt.replace(/<\/?[^>]+(>|$)/g, '').trim();
+      if (excerpt.length > 120) {
+        excerpt = excerpt.substring(0, 120) + '...';
+      }
+      
+      return (
+        <article class="flex flex-col h-full overflow-hidden bg-card rounded-lg border border-border shadow-sm hover:shadow-md transition-shadow">
+          {/* Featured Image */}
+          {featuredImage ? (
+            <a href={`/blog/${post.slug}`} class="block aspect-video overflow-hidden">
+              <img
+                src={featuredImage}
+                alt={post.title.rendered}
+                class="w-full h-full object-cover transition-transform hover:scale-105"
+              />
+            </a>
+          ) : (
+            <div class="aspect-video bg-muted flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="text-muted-foreground opacity-30"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/><path d="M6 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/></svg>
+            </div>
+          )}
+          
+          {/* Content */}
+          <div class="flex flex-col flex-grow p-5">
+            <div class="text-sm text-muted-foreground mb-2">
+              {postDate}
+            </div>
+            <h2 class="text-xl font-bold mb-3 line-clamp-2">
+              <a href={`/blog/${post.slug}`} class="hover:text-primary transition-colors" set:html={post.title.rendered} />
+            </h2>
+            <p class="text-muted-foreground mb-4 text-sm line-clamp-3">
+              {excerpt}
+            </p>
+            <div class="mt-auto pt-4">
+              <a href={`/blog/${post.slug}`} class="inline-flex items-center font-semibold text-primary hover:underline gap-1">
+                Read More
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+          </div>
+        </article>
+      )
+    }) : (
+      <div class="col-span-2 py-20 text-center">
+        <h2 class="text-xl font-bold mb-2">No Posts Found</h2>
+        <p class="text-muted-foreground">There are currently no posts in this category.</p>
+        <a href="/blog" class="inline-flex items-center mt-4 text-primary hover:underline">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m12 19-7-7 7-7"/><path d="M5 12h14"/></svg>
+          Back to all posts
+        </a>
+      </div>
+    )}
+  </div>
+  
+  <!-- Back to Blog Link -->
+  <div class="mt-10 mb-20">
+    <a href="/blog" class="inline-flex items-center text-primary hover:underline gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Back to all posts
+    </a>
+  </div>
+</BlogLayout>
