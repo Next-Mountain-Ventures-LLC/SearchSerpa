@@ -141,9 +141,9 @@ export default function BlogCarousel() {
     }
 
     return (
-      <div className="h-full flex flex-col overflow-hidden bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
+      <div className="flex flex-col overflow-hidden bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300" style={{ maxHeight: "400px" }}>
         {/* Featured image */}
-        <a href={`/blog/${post.slug}`} className="block w-full aspect-video relative overflow-hidden">
+        <a href={`/blog/${post.slug}`} className="block w-full h-32 relative overflow-hidden">
           {featuredImage ? (
             <img 
               src={featuredImage} 
@@ -158,7 +158,7 @@ export default function BlogCarousel() {
         </a>
         
         {/* Content */}
-        <div className="flex flex-col flex-grow p-5">
+        <div className="flex flex-col flex-grow p-3">
           <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
             <Calendar size={14} />
             <time dateTime={post.date}>{date.formatted}</time>
@@ -168,7 +168,7 @@ export default function BlogCarousel() {
             {title}
           </h3>
           
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-3">
+          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
             {excerpt}
           </p>
           
@@ -187,9 +187,9 @@ export default function BlogCarousel() {
   };
 
   return (
-    <section className="py-16 bg-accent/5">
+    <section className="py-8 bg-accent/5">
       <div className="container">
-        <div className="text-center mb-10">
+        <div className="text-center mb-5">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">
             SEO <span className="text-primary">Insights</span> & Resources
           </h2>
