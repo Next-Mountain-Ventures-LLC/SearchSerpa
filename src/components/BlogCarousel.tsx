@@ -45,7 +45,7 @@ export default function BlogCarousel() {
             },
             date: new Date().toISOString(),
             slug: "how-seo-can-boost-your-small-business-growth",
-            link: "/blog/how-seo-can-boost-your-small-business-growth",
+            link: "/blog/placeholder",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -63,7 +63,7 @@ export default function BlogCarousel() {
             },
             date: new Date().toISOString(),
             slug: "technical-seo-the-foundation-of-online-success",
-            link: "/blog/technical-seo-the-foundation-of-online-success",
+            link: "/blog/placeholder",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -81,7 +81,7 @@ export default function BlogCarousel() {
             },
             date: new Date().toISOString(),
             slug: "content-marketing-the-heart-of-modern-seo",
-            link: "/blog/content-marketing-the-heart-of-modern-seo",
+            link: "/blog/placeholder",
             _embedded: {
               'wp:featuredmedia': [
                 {
@@ -126,7 +126,7 @@ export default function BlogCarousel() {
                     return {
                       ...post,
                       // Override the external link with our internal blog path
-                      link: `/blog/${slug}`
+                      link: '/blog/placeholder'
                     };
                   });
                   
