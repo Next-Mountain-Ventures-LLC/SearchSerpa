@@ -9,24 +9,11 @@ import {
   CarouselPrevious,
 } from './ui/carousel';
 import { Button } from './ui/button';
-
-interface BlogPost {
-  id: number;
-  title: { rendered: string };
-  excerpt: { rendered: string };
-  date: string;
-  link: string;
-  _embedded?: {
-    author?: Array<{ name: string }>;
-    'wp:featuredmedia'?: Array<{
-      source_url: string;
-      alt_text: string;
-    }>;
-  };
-}
+import { getSearchSerpaPosts, getFallbackPosts, formatDate, stripHtml } from '../lib/wordpress';
+import type { WpPost } from '../lib/wordpress';
 
 export default function BlogCarousel() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [posts, setPosts] = useState<WpPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,120 +21,22 @@ export default function BlogCarousel() {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        // For development/testing, let's add a simulated blog post in case API calls fail
-        // This ensures users see something while the API integration is being finalized
-        const simulatedPosts = [
-          {
-            id: 1,
-            title: { rendered: "How SEO Can Boost Your Small Business Growth" },
-            excerpt: { 
-              rendered: "Discover how implementing strategic SEO techniques can dramatically increase visibility and customer acquisition for small businesses without breaking the marketing budget." 
-            },
-            date: new Date().toISOString(),
-            slug: "how-seo-can-boost-your-small-business-growth",
-            link: "/blog/placeholder",
-            _embedded: {
-              'wp:featuredmedia': [
-                {
-                  source_url: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&auto=format&fit=crop&q=80",
-                  alt_text: "SEO Strategy"
-                }
-              ]
-            }
-          },
-          {
-            id: 2,
-            title: { rendered: "Technical SEO: The Foundation of Online Success" },
-            excerpt: { 
-              rendered: "Learn why technical SEO is critical for your website's performance and how it affects your rankings in search engine results pages." 
-            },
-            date: new Date().toISOString(),
-            slug: "technical-seo-the-foundation-of-online-success",
-            link: "/blog/placeholder",
-            _embedded: {
-              'wp:featuredmedia': [
-                {
-                  source_url: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=600&h=400&auto=format&fit=crop&q=80",
-                  alt_text: "Technical SEO"
-                }
-              ]
-            }
-          },
-          {
-            id: 3,
-            title: { rendered: "Content Marketing: The Heart of Modern SEO" },
-            excerpt: { 
-              rendered: "Explore how content marketing and SEO work together to build authority, drive traffic, and generate leads for your business." 
-            },
-            date: new Date().toISOString(),
-            slug: "content-marketing-the-heart-of-modern-seo",
-            link: "/blog/placeholder",
-            _embedded: {
-              'wp:featuredmedia': [
-                {
-                  source_url: "https://images.unsplash.com/photo-1517842645767-c639042777db?w=600&h=400&auto=format&fit=crop&q=80",
-                  alt_text: "Content Marketing"
-                }
-              ]
-            }
-          }
-        ];
-
-        // Try to fetch from WordPress API
-        try {
-          // Using HTTPS instead of HTTP for secure connection
-          const categoriesResponse = await fetch('https://blog.nxtmt.ventures/wp-json/wp/v2/categories?per_page=100');
-          
-          if (categoriesResponse.ok) {
-            const categories = await categoriesResponse.json();
-            
-            // Try multiple variations of the category name to be safe
-            const searchSerpaCategory = categories.find((cat: any) => 
-              cat.name.toLowerCase() === 'searchserpa' || 
-              cat.name.toLowerCase() === 'search serpa' ||
-              cat.name.toLowerCase() === 'search-serpa' ||
-              cat.name.toLowerCase().includes('serpa') ||
-              cat.slug.includes('serpa')
-            );
-            
-            if (searchSerpaCategory) {
-              const postsResponse = await fetch(
-                `https://blog.nxtmt.ventures/wp-json/wp/v2/posts?categories=${searchSerpaCategory.id}&_embed&per_page=6`
-              );
-              
-              if (postsResponse.ok) {
-                const postsData = await postsResponse.json();
-                if (postsData && postsData.length > 0) {
-                  // Transform WordPress posts to use internal links
-                  const transformedPosts = postsData.map((post: any) => {
-                    // Extract the slug from the WordPress post if available, or generate one from title
-                    const slug = post.slug || titleToSlug(stripHtml(post.title.rendered));
-                    
-                    return {
-                      ...post,
-                      // Override the external link with our internal blog path
-                      link: '/blog/placeholder'
-                    };
-                  });
-                  
-                  setPosts(transformedPosts);
-                  setLoading(false);
-                  return; // Exit early if we have real posts
-                }
-              }
-            }
-          }
-        } catch (apiError) {
-          console.error("API error:", apiError);
-          // Continue to fallback if API fails
+        // Try to fetch posts from the SearchSerpa category
+        let fetchedPosts = await getSearchSerpaPosts({ perPage: 6 });
+        
+        // If no posts were returned, use the fallback posts
+        if (fetchedPosts.length === 0) {
+          console.log("No SearchSerpa posts found. Using fallback posts.");
+          fetchedPosts = getFallbackPosts();
         }
         
-        // Fallback to simulated posts if API doesn't work or returns no posts
-        console.log("Using fallback blog posts");
-        setPosts(simulatedPosts);
+        setPosts(fetchedPosts);
       } catch (err: any) {
         console.error('Error in blog carousel:', err);
         setError(err.message);
+        
+        // Use fallback posts if there was an error
+        setPosts(getFallbackPosts());
       } finally {
         setLoading(false);
       }
@@ -156,18 +45,7 @@ export default function BlogCarousel() {
     fetchPosts();
   }, []);
 
-  // Format date to a readable format
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString('en-US', options);
-  };
-
-  // Strip HTML tags from excerpt
-  const stripHtml = (html: string) => {
-    const temp = document.createElement('div');
-    temp.innerHTML = html;
-    return temp.textContent || temp.innerText || '';
-  };
+  // Note: We're now using the formatDate and stripHtml functions from the wordpress.ts service
   
   // Helper to convert WordPress title to slug
   const titleToSlug = (title: string): string => {
@@ -281,7 +159,7 @@ export default function BlogCarousel() {
                           <span>{formatDate(post.date)}</span>
                         </div>
                         <a 
-                          href={post.link}
+                          href={`/blog/${post.slug}`}
                           className="text-sm text-primary font-medium hover:underline"
                         >
                           Read More

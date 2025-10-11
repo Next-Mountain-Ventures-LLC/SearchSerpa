@@ -2,67 +2,25 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, ArrowRight, Newspaper } from "lucide-react";
+import { getSearchSerpaPosts, getFallbackPosts, formatDate, stripHtml } from "@/lib/wordpress";
+import type { WpPost } from "@/lib/wordpress";
 
-// This will be replaced with actual API call in getStaticProps
-const fallbackPosts = [
-  {
-    id: 1,
-    slug: "placeholder",
-    title: "How SEO Can Boost Your Small Business Growth",
-    excerpt: "Discover how implementing strategic SEO techniques can dramatically increase visibility and customer acquisition for small businesses without breaking the marketing budget.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 2,
-    slug: "placeholder",
-    title: "Technical SEO: The Foundation of Online Success",
-    excerpt: "Learn why technical SEO is critical for your website's performance and how it affects your rankings in search engine results pages.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=800&h=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 3,
-    slug: "placeholder",
-    title: "Content Marketing: The Heart of Modern SEO",
-    excerpt: "Explore how content marketing and SEO work together to build authority, drive traffic, and generate leads for your business.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1517842645767-c639042777db?w=800&h=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 4,
-    slug: "placeholder",
-    title: "Local SEO Strategies for Small Businesses",
-    excerpt: "Discover proven tactics to improve your local search visibility and attract more customers from your immediate geographic area.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1578091072400-8d84a7a29724?w=800&h=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 5,
-    slug: "placeholder",
-    title: "Understanding Search Intent for Better Rankings",
-    excerpt: "Learn how to identify and match user search intent to create content that ranks higher and converts better.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1649150849645-92fba77775a0?w=800&h=400&auto=format&fit=crop&q=80",
-  },
-  {
-    id: 6,
-    slug: "placeholder",
-    title: "Measuring SEO Success Beyond Rankings",
-    excerpt: "Explore the KPIs and metrics that truly matter when evaluating the effectiveness of your SEO strategy.",
-    date: new Date().toISOString(),
-    featuredImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&auto=format&fit=crop&q=80",
+// Fetch posts from WordPress API or use fallbacks
+let posts: WpPost[] = [];
+
+try {
+  // Try to get posts from the SearchSerpa category
+  posts = await getSearchSerpaPosts({ perPage: 9 });
+  
+  // If no posts were found, use fallback posts
+  if (posts.length === 0) {
+    posts = getFallbackPosts();
   }
-];
-
-// Format date
-function formatDate(dateString: string) {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
+} catch (error) {
+  console.error('Error fetching blog posts:', error);
+  // Use fallback posts if there was an error
+  posts = getFallbackPosts();
 }
-
-// In the future, we would fetch posts from WordPress API here
-const posts = fallbackPosts;
 ---
 
 <BaseLayout 
@@ -90,19 +48,19 @@ const posts = fallbackPosts;
             <Card class="h-full flex flex-col transition-shadow duration-300 hover:shadow-lg">
               <div class="aspect-video w-full overflow-hidden rounded-t-lg">
                 <img
-                  src={post.featuredImage}
-                  alt={post.title}
+                  src={post._embedded?.['wp:featuredmedia']?.[0]?.source_url || post.featuredImage}
+                  alt={post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || (typeof post.title === 'string' ? post.title : stripHtml(post.title?.rendered || ''))}
                   class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <CardHeader class="pb-2 pt-4">
                 <CardTitle class="line-clamp-2 text-xl group-hover:text-primary transition-colors duration-300">
-                  {post.title}
+                  {post.title?.rendered ? <Fragment set:html={post.title.rendered} /> : post.title}
                 </CardTitle>
               </CardHeader>
               <CardContent class="flex-grow">
                 <p class="line-clamp-3 text-muted-foreground">
-                  {post.excerpt}
+                  {post.excerpt?.rendered ? stripHtml(post.excerpt.rendered) : post.excerpt}
                 </p>
               </CardContent>
               <CardFooter class="border-t pt-4 flex justify-between items-center">

@@ -1,375 +1,96 @@
 ---
-import BlogLayout from "@/layouts/BlogLayout.astro";
+import BlogPostLayout from "@/layouts/BlogPostLayout.astro";
+import { getPostBySlug, getSearchSerpaPosts, getFallbackPosts, getReadingTime } from "@/lib/wordpress";
+import type { WpPost } from "@/lib/wordpress";
 
-// Define params for getStaticPaths
-export function getStaticPaths() {
-  // In a real implementation, we would fetch all posts from WordPress
-  // and generate paths for each one
-  
-  // For now, let's just return paths for our sample posts
-  return [
-    {
-      params: { slug: 'how-seo-can-boost-your-small-business-growth' },
-      props: {
-        post: {
-          title: "How SEO Can Boost Your Small Business Growth",
-          description: "Discover how implementing strategic SEO techniques can dramatically increase visibility and customer acquisition for small businesses without breaking the marketing budget.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `
-            <p>In today's digital landscape, small businesses face unique challenges when competing for online visibility. While larger competitors may have substantial marketing budgets, small businesses can level the playing field through strategic SEO implementation.</p>
-            
-            <h2>Why SEO Matters for Small Businesses</h2>
-            
-            <p>Search Engine Optimization (SEO) provides small businesses with a cost-effective way to attract highly targeted traffic. Unlike paid advertising, which stops generating leads the moment you stop paying, SEO creates lasting assets that continue to drive traffic and leads over time.</p>
-            
-            <p>The statistics speak for themselves:</p>
-            
-            <ul>
-              <li>93% of online experiences begin with a search engine</li>
-              <li>75% of users never scroll past the first page of search results</li>
-              <li>70-80% of users ignore paid search results, focusing on organic listings</li>
-              <li>SEO leads have a 14.6% close rate, compared to 1.7% for outbound leads</li>
-            </ul>
-            
-            <h2>Key SEO Strategies for Small Businesses</h2>
-            
-            <h3>1. Local SEO Optimization</h3>
-            
-            <p>For businesses serving specific geographic areas, local SEO is essential. This includes:</p>
-            
-            <ul>
-              <li>Creating and optimizing a Google Business Profile</li>
-              <li>Building local citations across relevant directories</li>
-              <li>Generating authentic customer reviews</li>
-              <li>Creating location-specific content</li>
-            </ul>
-            
-            <h3>2. Content Strategy Focused on Value</h3>
-            
-            <p>Content remains the foundation of effective SEO. Small businesses should:</p>
-            
-            <ul>
-              <li>Create in-depth content addressing customer pain points</li>
-              <li>Focus on long-tail keywords with less competition</li>
-              <li>Develop content clusters around core service offerings</li>
-              <li>Maintain consistent publishing schedules</li>
-            </ul>
-            
-            <h3>3. Technical Foundation</h3>
-            
-            <p>Technical SEO ensures search engines can properly index and understand your site:</p>
-            
-            <ul>
-              <li>Mobile optimization is non-negotiable</li>
-              <li>Page speed directly impacts both rankings and conversions</li>
-              <li>Proper site structure helps search engines understand content relationships</li>
-              <li>Secure sites (HTTPS) receive preferential treatment in rankings</li>
-            </ul>
-            
-            <h2>Measuring SEO Success</h2>
-            
-            <p>Small businesses should track these key metrics to evaluate SEO effectiveness:</p>
-            
-            <ul>
-              <li>Organic traffic growth</li>
-              <li>Keyword ranking improvements</li>
-              <li>Conversion rates from organic search</li>
-              <li>Local visibility and Google Business Profile performance</li>
-              <li>Backlink quality and growth</li>
-            </ul>
-            
-            <h2>The Long-Term Value Proposition</h2>
-            
-            <p>Perhaps the most significant advantage of SEO for small businesses is the compounding return on investment. Unlike paid advertising, which requires continuous spending to maintain visibility, SEO builds equity in your digital presence that appreciates over time.</p>
-            
-            <p>By consistently applying these strategies, small businesses can achieve sustainable growth through improved organic visibility, establishing themselves as authoritative resources in their industries despite having smaller marketing budgets than their larger competitors.</p>
-          `
-        }
-      }
-    },
-    {
-      params: { slug: 'technical-seo-the-foundation-of-online-success' },
-      props: {
-        post: {
-          title: "Technical SEO: The Foundation of Online Success",
-          description: "Learn why technical SEO is critical for your website's performance and how it affects your rankings in search engine results pages.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `
-            <p>While content and backlinks often receive the spotlight in SEO discussions, technical SEO provides the foundation upon which all other optimization efforts stand. Without proper technical implementation, even the best content strategy will struggle to achieve its full potential.</p>
-            
-            <h2>What Is Technical SEO?</h2>
-            
-            <p>Technical SEO refers to the optimization of your website's infrastructure to help search engines efficiently crawl, index, and render your pages. It encompasses everything from site speed and mobile-friendliness to structured data and site architecture.</p>
-            
-            <h2>Critical Technical SEO Elements</h2>
-            
-            <h3>1. Site Speed and Core Web Vitals</h3>
-            
-            <p>Google's Page Experience update formalized what SEO professionals have known for years: fast-loading websites provide better user experiences and earn higher rankings. Core Web Vitals measure:</p>
-            
-            <ul>
-              <li><strong>Largest Contentful Paint (LCP)</strong>: Measures loading performance</li>
-              <li><strong>First Input Delay (FID)</strong>: Measures interactivity</li>
-              <li><strong>Cumulative Layout Shift (CLS)</strong>: Measures visual stability</li>
-            </ul>
-            
-            <p>Improving these metrics through image optimization, proper resource loading, and minimizing render-blocking resources can significantly impact your search performance.</p>
-            
-            <h3>2. Mobile Optimization</h3>
-            
-            <p>With Google's mobile-first indexing, your site's mobile experience now determines how Google views your entire website. Responsive design is no longer optional—it's essential.</p>
-            
-            <h3>3. Indexation Control</h3>
-            
-            <p>Proper management of which pages should be indexed is crucial for SEO success:</p>
-            
-            <ul>
-              <li>robots.txt file directs crawler behavior</li>
-              <li>Meta robots tags provide page-level indexing instructions</li>
-              <li>XML sitemaps help search engines discover important pages</li>
-              <li>Canonical tags prevent duplicate content issues</li>
-            </ul>
-            
-            <h3>4. Site Architecture and URL Structure</h3>
-            
-            <p>A logical site structure helps both users and search engines understand your content organization:</p>
-            
-            <ul>
-              <li>Clear navigation hierarchy</li>
-              <li>Logical URL structures (domain.com/category/subcategory/page)</li>
-              <li>Proper internal linking to distribute page authority</li>
-              <li>Breadcrumb navigation for additional context</li>
-            </ul>
-            
-            <h3>5. Structured Data</h3>
-            
-            <p>Schema markup helps search engines understand your content context, enabling rich results in search listings:</p>
-            
-            <ul>
-              <li>LocalBusiness schema for local SEO</li>
-              <li>Product schema for e-commerce</li>
-              <li>FAQ schema for informational content</li>
-              <li>Review schema for credibility signals</li>
-            </ul>
-            
-            <h2>Technical SEO Audit Process</h2>
-            
-            <p>Regular technical audits should examine:</p>
-            
-            <ol>
-              <li>Crawlability issues (server errors, redirect chains)</li>
-              <li>Indexation status (indexed pages vs. submitted pages)</li>
-              <li>Mobile usability</li>
-              <li>Page speed metrics</li>
-              <li>Structured data implementation and errors</li>
-              <li>HTTPS security</li>
-              <li>Duplicate content issues</li>
-            </ol>
-            
-            <h2>The Business Impact of Technical SEO</h2>
-            
-            <p>Investing in technical SEO yields multiple business benefits:</p>
-            
-            <ul>
-              <li><strong>Improved user experience</strong>: Faster sites reduce bounce rates and increase conversions</li>
-              <li><strong>Higher crawl efficiency</strong>: Search engines can discover and index more of your valuable content</li>
-              <li><strong>Better rankings</strong>: Technical optimization provides competitive advantages in search visibility</li>
-              <li><strong>Future-proofing</strong>: A technically sound site adapts more easily to search engine algorithm updates</li>
-            </ul>
-            
-            <p>By establishing a solid technical foundation, you create an environment where your content and link-building strategies can thrive, leading to sustainable organic search success.</p>
-          `
-        }
-      }
-    },
-    {
-      params: { slug: 'content-marketing-the-heart-of-modern-seo' },
-      props: {
-        post: {
-          title: "Content Marketing: The Heart of Modern SEO",
-          description: "Explore how content marketing and SEO work together to build authority, drive traffic, and generate leads for your business.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1517842645767-c639042777db?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `
-            <p>Content marketing has evolved from a buzzword to the cornerstone of effective digital marketing strategies. In the context of SEO, quality content has become the single most important factor in achieving sustainable search visibility.</p>
-            
-            <h2>The Symbiotic Relationship Between Content and SEO</h2>
-            
-            <p>Content marketing and SEO are intrinsically connected:</p>
-            
-            <ul>
-              <li>Content provides the substance that search engines evaluate</li>
-              <li>SEO ensures that content reaches its intended audience</li>
-              <li>User engagement with content sends quality signals back to search engines</li>
-              <li>Content that satisfies user intent leads to improved rankings</li>
-            </ul>
-            
-            <h2>Content Strategy for SEO Success</h2>
-            
-            <h3>1. Understanding Search Intent</h3>
-            
-            <p>Modern SEO content strategy begins with understanding the four primary types of search intent:</p>
-            
-            <ul>
-              <li><strong>Informational</strong>: Users seeking knowledge (how-to guides, explanations)</li>
-              <li><strong>Navigational</strong>: Users looking for specific websites or pages</li>
-              <li><strong>Commercial</strong>: Users researching products before purchasing</li>
-              <li><strong>Transactional</strong>: Users ready to complete a specific action</li>
-            </ul>
-            
-            <p>Aligning content with the appropriate intent stage ensures it meets user needs and earns search visibility.</p>
-            
-            <h3>2. Topic Clusters and Content Pillars</h3>
-            
-            <p>The topic cluster model has revolutionized content organization for SEO:</p>
-            
-            <ul>
-              <li>Pillar pages cover broad topics comprehensively</li>
-              <li>Cluster content explores specific aspects of the main topic</li>
-              <li>Internal linking connects related content</li>
-              <li>This structure signals topical authority to search engines</li>
-            </ul>
-            
-            <h3>3. Quality Metrics That Matter</h3>
-            
-            <p>Search engines evaluate content quality through various signals:</p>
-            
-            <ul>
-              <li><strong>Expertise</strong>: Demonstrates specialized knowledge</li>
-              <li><strong>Depth</strong>: Covers topics comprehensively</li>
-              <li><strong>Originality</strong>: Offers unique perspectives or information</li>
-              <li><strong>Accuracy</strong>: Provides factual, up-to-date information</li>
-              <li><strong>Presentation</strong>: Structured for readability and engagement</li>
-            </ul>
-            
-            <h2>Content Formats for SEO Impact</h2>
-            
-            <p>Different content formats serve specific SEO purposes:</p>
-            
-            <h3>Evergreen Content</h3>
-            
-            <p>Comprehensive resources that maintain relevance over time, building sustainable traffic:</p>
-            
-            <ul>
-              <li>Ultimate guides</li>
-              <li>Resource libraries</li>
-              <li>Encyclopedic entries</li>
-              <li>Foundational concept explanations</li>
-            </ul>
-            
-            <h3>Timely Content</h3>
-            
-            <p>Capitalizes on current interests and trending topics:</p>
-            
-            <ul>
-              <li>Industry news analysis</li>
-              <li>Event coverage</li>
-              <li>Data studies and reports</li>
-              <li>Trend interpretations</li>
-            </ul>
-            
-            <h3>Multi-Format Content</h3>
-            
-            <p>Expands reach through different content preferences:</p>
-            
-            <ul>
-              <li>Video content (captures featured snippets and video search)</li>
-              <li>Infographics (earns backlinks and social shares)</li>
-              <li>Podcasts (taps into audio search and new audiences)</li>
-              <li>Interactive tools (increases engagement metrics)</li>
-            </ul>
-            
-            <h2>Measuring Content Marketing Success</h2>
-            
-            <p>Effective content performance measurement includes:</p>
-            
-            <ul>
-              <li><strong>Search visibility</strong>: Rankings for target keywords</li>
-              <li><strong>Organic traffic</strong>: Volume and growth from search</li>
-              <li><strong>Engagement metrics</strong>: Time on page, bounce rate, pages per session</li>
-              <li><strong>Conversion metrics</strong>: Newsletter signups, lead form completions, sales</li>
-              <li><strong>Authority signals</strong>: Backlinks, social shares, brand mentions</li>
-            </ul>
-            
-            <h2>The Future of Content and SEO</h2>
-            
-            <p>As search engines continue to evolve, content strategies must adapt to:</p>
-            
-            <ul>
-              <li>Voice search optimization</li>
-              <li>AI-generated content evaluation</li>
-              <li>Visual search integration</li>
-              <li>Enhanced natural language understanding</li>
-              <li>User experience as a ranking factor</li>
-            </ul>
-            
-            <p>By developing a content strategy that prioritizes user value while applying SEO best practices, businesses can build sustainable organic search visibility that drives meaningful business results.</p>
-          `
-        }
-      }
-    },
-    {
-      params: { slug: 'local-seo-strategies-for-small-businesses' },
-      props: {
-        post: {
-          title: "Local SEO Strategies for Small Businesses",
-          description: "Discover proven tactics to improve your local search visibility and attract more customers from your immediate geographic area.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1578091072400-8d84a7a29724?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `<p>For small businesses serving specific geographic areas, local SEO provides the most direct path to reaching nearby customers actively searching for their products or services. This article explores essential strategies to improve local search visibility.</p>`
-        }
-      }
-    },
-    {
-      params: { slug: 'understanding-search-intent-for-better-rankings' },
-      props: {
-        post: {
-          title: "Understanding Search Intent for Better Rankings",
-          description: "Learn how to identify and match user search intent to create content that ranks higher and converts better.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1649150849645-92fba77775a0?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `<p>Search intent has become the foundation of successful SEO strategies. This article explains how to identify different types of search intent and align your content to meet user expectations.</p>`
-        }
-      }
-    },
-    {
-      params: { slug: 'measuring-seo-success-beyond-rankings' },
-      props: {
-        post: {
-          title: "Measuring SEO Success Beyond Rankings",
-          description: "Explore the KPIs and metrics that truly matter when evaluating the effectiveness of your SEO strategy.",
-          publishDate: new Date().toISOString(),
-          featuredImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&h=600&auto=format&fit=crop&q=80",
-          content: `<p>While rankings are important, they're just one aspect of SEO success. This article explores the complete set of metrics businesses should track to truly understand their SEO performance.</p>`
-        }
-      }
-    }
-  ];
+export async function getStaticPaths() {
+  let posts: WpPost[] = [];
+
+  // Try to fetch posts from WordPress API
+  try {
+    posts = await getSearchSerpaPosts({ perPage: 100 });
+  } catch (error) {
+    console.error("Error fetching posts from API:", error);
+  }
+
+  // If no posts are returned from API, use fallback posts
+  if (posts.length === 0) {
+    posts = getFallbackPosts();
+  }
+
+  // Create a path for each post
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
 }
 
-// In a real implementation, this would fetch the post data from WordPress API
-// based on the slug parameter
+// Get props from getStaticPaths
 const { post } = Astro.props;
 
-// Calculate estimated reading time
-function calculateReadingTime(content: string) {
-  const wordsPerMinute = 200;
-  const wordCount = content.split(/\s+/).length;
-  const readingTime = Math.ceil(wordCount / wordsPerMinute);
-  return readingTime;
+// If the post was not found in getStaticPaths, try to fetch it directly
+// This handles cases where new posts are added after the site is built
+let finalPost = post;
+if (!finalPost) {
+  const slug = Astro.params.slug as string;
+  try {
+    finalPost = await getPostBySlug(slug);
+  } catch (error) {
+    console.error(`Error fetching post with slug ${slug}:`, error);
+  }
+  
+  // If we still don't have a post, try to find it in fallbacks
+  if (!finalPost) {
+    const fallbackPosts = getFallbackPosts();
+    finalPost = fallbackPosts.find(p => p.slug === slug) || null;
+  }
 }
 
-const readingTime = calculateReadingTime(post.content);
+// If no post is found, redirect to 404
+if (!finalPost) {
+  return Astro.redirect("/404");
+}
+
+// Extract post data
+const {
+  title,
+  content,
+  date,
+  excerpt,
+  _embedded
+} = finalPost;
+
+// Get featured image
+const featuredImage = _embedded && _embedded['wp:featuredmedia']?.[0]?.source_url;
+
+// Get author name
+const author = _embedded?.author?.[0]?.name || "SearchSerpa Team";
+
+// Get categories
+const categories = _embedded?.['wp:term']?.[0]?.map(term => ({
+  name: term.name,
+  slug: term.slug
+})) || [];
+
+// Calculate reading time
+const readingTime = getReadingTime(content.rendered);
+
+// Clean post title (remove HTML)
+const cleanTitle = title.rendered.replace(/<\/?[^>]+(>|$)/g, '');
+
+// Clean excerpt for meta description
+const cleanExcerpt = excerpt.rendered.replace(/<\/?[^>]+(>|$)/g, '').trim();
 ---
 
-<BlogLayout
-  title={post.title}
-  description={post.description}
-  publishDate={post.publishDate}
-  featuredImage={post.featuredImage}
-  readingTime={readingTime.toString()}
+<BlogPostLayout
+  title={cleanTitle}
+  description={cleanExcerpt}
+  date={date}
+  featuredImage={featuredImage}
+  author={author}
+  readingTime={readingTime}
+  categories={categories}
 >
-  <div set:html={post.content} />
-</BlogLayout>
+  <!-- Render the WordPress content -->
+  <div set:html={content.rendered} />
+</BlogPostLayout>

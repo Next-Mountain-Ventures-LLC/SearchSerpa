@@ -1,0 +1,146 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate } from "@/lib/wordpress";
+import { ArrowLeft, Calendar, Clock, User, Tag } from "lucide-react";
+
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  featuredImage?: string;
+  author?: string;
+  readingTime?: number;
+  categories?: Array<{ name: string; slug: string }>;
+}
+
+const { 
+  title, 
+  description, 
+  date, 
+  featuredImage, 
+  author = "SearchSerpa Team", 
+  readingTime = 3,
+  categories = [] 
+} = Astro.props;
+
+const formattedDate = formatDate(date);
+
+// Construct OG image URL from Astro.site if available
+const ogImage = featuredImage || (Astro.site ? new URL('/images/blog-default.jpg', Astro.site) : undefined);
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage}>
+  <main>
+    <article class="relative overflow-hidden">
+      <!-- Article header section -->
+      <header class="pt-16 pb-10 md:pt-20 md:pb-14 relative">
+        {featuredImage && (
+          <div class="absolute inset-0 -z-10 opacity-10">
+            <img
+              src={featuredImage}
+              alt=""
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-background/70 to-background"></div>
+          </div>
+        )}
+        
+        <div class="container px-4 mx-auto">
+          <div class="max-w-3xl mx-auto">
+            <!-- Back link -->
+            <div class="mb-8">
+              <a href="/blog" class="inline-flex items-center text-primary hover:underline">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                <span>Back to blog</span>
+              </a>
+            </div>
+            
+            <!-- Categories -->
+            {categories.length > 0 && (
+              <div class="mb-4 flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs bg-secondary/10 text-secondary font-medium">
+                    <Tag className="w-3 h-3 mr-1" />
+                    {category.name}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            <!-- Title -->
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              {title}
+            </h1>
+            
+            <!-- Meta information -->
+            <div class="flex flex-wrap items-center text-sm text-muted-foreground gap-x-6 gap-y-2">
+              {author && (
+                <div class="flex items-center">
+                  <User className="w-4 h-4 mr-2" />
+                  <span>{author}</span>
+                </div>
+              )}
+              
+              <div class="flex items-center">
+                <Calendar className="w-4 h-4 mr-2" />
+                <span>{formattedDate}</span>
+              </div>
+              
+              <div class="flex items-center">
+                <Clock className="w-4 h-4 mr-2" />
+                <span>{readingTime} min read</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Featured image (full width if available) -->
+      {featuredImage && (
+        <div class="container mx-auto px-4 md:px-6 mb-12">
+          <div class="max-w-4xl mx-auto">
+            <figure class="aspect-video overflow-hidden rounded-lg shadow-md">
+              <img
+                src={featuredImage}
+                alt={title}
+                class="w-full h-full object-cover"
+              />
+            </figure>
+          </div>
+        </div>
+      )}
+      
+      <!-- Article content -->
+      <div class="container mx-auto px-4 md:px-6 pb-16">
+        <div class="max-w-3xl mx-auto">
+          <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg">
+            <slot />
+          </div>
+        </div>
+      </div>
+      
+      <!-- Article footer with share links and related posts could go here -->
+      <footer class="container mx-auto px-4 md:px-6 pb-20 border-t pt-8">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-xl font-bold mb-6">Continue Reading</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Related posts would go here in a real implementation -->
+            <a href="/blog" class="block p-6 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+              <h3 class="font-bold text-lg mb-2">Explore More Articles</h3>
+              <p class="text-muted-foreground">
+                Discover more insights and strategies to improve your SEO performance.
+              </p>
+            </a>
+            
+            <a href="#" class="block p-6 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">
+              <h3 class="font-bold text-lg mb-2">Get Your Free Site Audit</h3>
+              <p class="text-muted-foreground">
+                See how your website measures up and get actionable recommendations.
+              </p>
+            </a>
+          </div>
+        </div>
+      </footer>
+    </article>
+  </main>
+</BaseLayout>
