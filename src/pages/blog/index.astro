@@ -1,0 +1,113 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getSearchSerpaPosts, getFallbackPosts, getFeaturedImageUrl, formatDate, getTerms } from "@/lib/wordpress";
+import { Calendar, ArrowRight, Tag } from "lucide-react";
+
+// Fetch blog posts
+let posts = [];
+
+try {
+  posts = await getSearchSerpaPosts({ perPage: 30 });
+} catch (error) {
+  console.error("Error fetching posts:", error);
+}
+
+// Use fallback posts if API request fails
+if (!posts || posts.length === 0) {
+  posts = getFallbackPosts();
+}
+---
+
+<BaseLayout 
+  title="SEO Blog | SearchSerpa" 
+  description="Stay updated with the latest SEO insights, strategies, and industry news to help your business succeed online."
+>
+  <section class="bg-accent/5 py-12 md:py-16 mb-10">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          SEO <span class="text-primary">Insights</span> & Resources
+        </h1>
+        <p class="text-muted-foreground text-lg max-w-2xl mx-auto">
+          Stay updated with the latest SEO strategies, tips, and industry news to help your business succeed online.
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <section class="container mb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map(post => {
+        // Clean HTML tags from title and excerpt
+        const title = post.title?.rendered.replace(/<\/?[^>]+(>|$)/g, '').trim();
+        let excerpt = post.excerpt?.rendered.replace(/<\/?[^>]+(>|$)/g, '').trim();
+        if (excerpt && excerpt.length > 120) {
+          excerpt = excerpt.substring(0, 120) + '...';
+        }
+        
+        // Get featured image
+        const featuredImage = getFeaturedImageUrl(post, 'medium');
+        
+        // Format date
+        const formattedDate = formatDate(post.date);
+        
+        // Get categories and tags
+        const { categories, tags } = getTerms(post);
+        
+        return (
+          <article class="bg-card border border-border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
+            <a href={`/blog/${post.slug}`} class="block aspect-video w-full overflow-hidden">
+              {featuredImage ? (
+                <img 
+                  src={featuredImage} 
+                  alt={title} 
+                  class="w-full h-full object-cover transition-transform hover:scale-105 duration-300"
+                />
+              ) : (
+                <div class="w-full h-full bg-muted flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground opacity-30"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/><path d="M6 7v3a2 2 0 0 1-2 2v0a2 2 0 0 1-2-2V7"/></svg>
+                </div>
+              )}
+            </a>
+            
+            <div class="p-6">
+              <div class="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
+                <Calendar size={14} />
+                <time datetime={post.date}>{formattedDate}</time>
+              </div>
+              
+              <h2 class="text-xl font-bold mb-3 line-clamp-2 hover:text-primary transition-colors">
+                <a href={`/blog/${post.slug}`}>{title}</a>
+              </h2>
+              
+              <p class="text-muted-foreground text-sm mb-4 line-clamp-3">
+                {excerpt}
+              </p>
+              
+              {tags && tags.length > 0 && (
+                <div class="flex flex-wrap gap-1 mb-4">
+                  {tags.slice(0, 3).map(tag => (
+                    <a 
+                      href={`/blog/tag/${tag.slug}`}
+                      class="inline-flex items-center text-xs px-2 py-1 rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
+                    >
+                      {tag.name}
+                    </a>
+                  ))}
+                </div>
+              )}
+              
+              <a 
+                href={`/blog/${post.slug}`}
+                class="inline-flex items-center gap-1 text-primary font-medium hover:underline text-sm mt-2"
+              >
+                Read More
+                <ArrowRight size={14} />
+              </a>
+            </div>
+          </article>
+        )
+      })}
+    </div>
+  </section>
+</BaseLayout>

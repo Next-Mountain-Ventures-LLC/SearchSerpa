@@ -105,6 +105,7 @@ export interface GetPostsParams {
   tags?: number[];
   slug?: string;
   search?: string;
+  _embed?: boolean;
 }
 
 /**
@@ -165,15 +166,19 @@ export async function getPosts(params: GetPostsParams = {}): Promise<WpPost[]> {
     categories,
     tags,
     slug,
-    search
+    search,
+    _embed = true
   } = params;
   
   // Build query parameters
   const queryParams = new URLSearchParams({
     page: page.toString(),
     per_page: perPage.toString(),
-    _embed: 'wp:featuredmedia,wp:term,author',
   });
+  
+  if (_embed) {
+    queryParams.set('_embed', 'wp:featuredmedia,wp:term,author');
+  }
   
   if (categories && categories.length > 0) {
     queryParams.set('categories', categories.join(','));
@@ -195,6 +200,43 @@ export async function getPosts(params: GetPostsParams = {}): Promise<WpPost[]> {
     return await fetchWithCache<WpPost[]>(`${WP_API_URL}/posts?${queryParams.toString()}`);
   } catch (error) {
     console.error('Error fetching posts:', error);
+    return [];
+  }
+}
+
+/**
+ * Get all posts for static site generation
+ */
+export async function getAllPosts(): Promise<WpPost[]> {
+  try {
+    // Use a higher per_page value to get as many posts as possible in one request
+    // WordPress API typically limits to 100 per page
+    let allPosts: WpPost[] = [];
+    let page = 1;
+    let hasMorePosts = true;
+    
+    while (hasMorePosts) {
+      const posts = await getPosts({
+        perPage: 100,
+        page: page,
+      });
+      
+      if (posts.length === 0) {
+        hasMorePosts = false;
+      } else {
+        allPosts = [...allPosts, ...posts];
+        page++;
+      }
+      
+      // Safety check to prevent infinite loops
+      if (page > 10) {
+        hasMorePosts = false;
+      }
+    }
+    
+    return allPosts;
+  } catch (error) {
+    console.error('Error fetching all posts:', error);
     return [];
   }
 }

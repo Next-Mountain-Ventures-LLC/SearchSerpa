@@ -143,7 +143,7 @@ export default function BlogCarousel() {
     return (
       <div className="h-full flex flex-col overflow-hidden bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300">
         {/* Featured image */}
-        <a href={post.link || `/blog/${post.slug}`} className="block w-full aspect-video relative overflow-hidden" target={post.link ? "_blank" : "_self"}>
+        <a href={`/blog/${post.slug}`} className="block w-full aspect-video relative overflow-hidden">
           {featuredImage ? (
             <img 
               src={featuredImage} 
@@ -174,9 +174,8 @@ export default function BlogCarousel() {
           
           <div className="mt-auto pt-4">
             <a 
-              href={post.link || `/blog/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="inline-flex items-center gap-1 text-primary font-medium hover:underline text-sm"
-              target={post.link ? "_blank" : "_self"}
             >
               Read More
               <ArrowRight size={14} />
@@ -209,10 +208,8 @@ export default function BlogCarousel() {
             {/* Carousel navigation */}
             <div className="flex justify-between items-center mb-6">
               <a 
-                href="https://blog.nxtmt.ventures/" 
+                href="/blog" 
                 className="text-sm font-medium flex items-center gap-1 text-primary hover:underline"
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 View All Posts
                 <ArrowRight size={16} />

@@ -1,0 +1,276 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { formatDate, parseDate, getTerms, getAuthorData, getFeaturedImageUrl, type WpPost } from "@/lib/wordpress";
+import { Calendar, Clock, Tag, User, ArrowLeft } from "lucide-react";
+
+export interface Props {
+  post: WpPost;
+}
+
+const { post } = Astro.props;
+
+// Extract post data
+const title = post.title.rendered;
+const content = post.content.rendered;
+const date = parseDate(post.date);
+const featuredImage = getFeaturedImageUrl(post, "large");
+const author = getAuthorData(post);
+const { categories, tags } = getTerms(post);
+
+// Calculate reading time
+const readingTime = (() => {
+  const text = content.replace(/<[^>]*>/g, '');
+  const wpm = 225;
+  const words = text.trim().split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / wpm));
+})();
+
+// Clean title (remove HTML tags)
+const cleanTitle = title.replace(/<\/?[^>]+(>|$)/g, '').trim();
+---
+
+<BaseLayout title={`${cleanTitle} | SearchSerpa Blog`} description={post.excerpt?.rendered?.replace(/<\/?[^>]+(>|$)/g, '').trim() || ""}>
+  <div class="bg-accent/5 py-8 mb-8">
+    <div class="container">
+      <div class="flex items-center gap-2 mb-4">
+        <a href="/blog" class="flex items-center gap-1 text-sm text-primary hover:underline">
+          <ArrowLeft size={14} />
+          Back to Blog
+        </a>
+      </div>
+      
+      <h1 class="text-3xl md:text-4xl font-bold mb-4" set:html={title} />
+      
+      <div class="flex flex-wrap items-center gap-4 mb-6 text-sm text-muted-foreground">
+        {author && (
+          <div class="flex items-center gap-1.5">
+            <User size={14} />
+            <span>{author.name}</span>
+          </div>
+        )}
+        
+        <div class="flex items-center gap-1.5">
+          <Calendar size={14} />
+          <time datetime={post.date}>{date.formatted}</time>
+        </div>
+        
+        <div class="flex items-center gap-1.5">
+          <Clock size={14} />
+          <span>{readingTime} min read</span>
+        </div>
+      </div>
+      
+      {featuredImage && (
+        <div class="rounded-lg overflow-hidden mb-8 max-h-[500px]">
+          <img
+            src={featuredImage}
+            alt={cleanTitle}
+            class="w-full h-full object-cover"
+          />
+        </div>
+      )}
+    </div>
+  </div>
+  
+  <div class="container mb-16">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_300px] gap-12">
+      <main>
+        <article class="blog-content prose prose-slate max-w-none" set:html={content} />
+        
+        {tags && tags.length > 0 && (
+          <div class="mt-8 pt-6 border-t border-border">
+            <div class="flex flex-wrap items-center gap-2">
+              <Tag size={16} class="text-muted-foreground" />
+              {tags.map((tag) => (
+                <a
+                  href={`/blog/tag/${tag.slug}`}
+                  class="inline-block px-3 py-1 bg-accent/10 hover:bg-accent/20 rounded-full text-xs transition-colors"
+                >
+                  {tag.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </main>
+      
+      <aside class="space-y-8">
+        <div class="bg-card border border-border rounded-lg p-6 sticky top-8">
+          <h3 class="text-lg font-semibold mb-4">Categories</h3>
+          <ul class="space-y-2">
+            {categories.map((category) => (
+              <li>
+                <a 
+                  href={`/blog/category/${category.slug}`}
+                  class="text-sm hover:text-primary transition-colors"
+                >
+                  {category.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* WordPress content styling */
+  .blog-content {
+    max-width: none;
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+  }
+  
+  .blog-content h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: hsl(var(--foreground));
+  }
+  
+  .blog-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: hsl(var(--foreground));
+  }
+  
+  .blog-content h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: hsl(var(--foreground));
+  }
+  
+  .blog-content p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+  }
+  
+  .blog-content a {
+    color: hsl(var(--primary));
+    text-decoration: none;
+  }
+  
+  .blog-content a:hover {
+    text-decoration: underline;
+  }
+  
+  .blog-content ul, .blog-content ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .blog-content ul {
+    list-style-type: disc;
+  }
+  
+  .blog-content ol {
+    list-style-type: decimal;
+  }
+  
+  .blog-content li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .blog-content blockquote {
+    border-left: 4px solid hsl(var(--primary));
+    padding-left: 1rem;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: hsl(var(--muted-foreground));
+  }
+  
+  .blog-content pre {
+    background-color: hsl(var(--muted));
+    padding: 1rem;
+    border-radius: 0.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+  
+  .blog-content code {
+    background-color: hsl(var(--muted));
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  
+  .blog-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    margin: 1.5rem 0;
+  }
+  
+  .blog-content hr {
+    border: 0;
+    height: 1px;
+    background-color: hsl(var(--border));
+    margin: 2rem 0;
+  }
+  
+  .blog-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+  }
+  
+  .blog-content th, .blog-content td {
+    border: 1px solid hsl(var(--border));
+    padding: 0.5rem;
+  }
+  
+  .blog-content th {
+    background-color: hsl(var(--muted));
+    font-weight: 600;
+  }
+  
+  /* WordPress specific classes */
+  .blog-content .wp-block-image {
+    margin: 2rem 0;
+  }
+  
+  .blog-content .wp-block-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+  }
+  
+  .blog-content .wp-caption {
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .blog-content .wp-caption-text {
+    font-size: 0.875rem;
+    color: hsl(var(--muted-foreground));
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+  
+  .blog-content .aligncenter {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  .blog-content .alignleft {
+    float: left;
+    margin-right: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .blog-content .alignright {
+    float: right;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+</style>

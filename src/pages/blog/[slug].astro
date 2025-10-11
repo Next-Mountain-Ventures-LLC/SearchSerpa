@@ -1,0 +1,42 @@
+---
+import BlogLayout from "@/layouts/BlogLayout.astro";
+import { getPostBySlug, getAllPosts, getFallbackPosts } from "@/lib/wordpress";
+
+// Generate all static paths for blog posts
+export async function getStaticPaths() {
+  console.log('Generating static paths for blog posts...');
+  
+  let allPosts = [];
+  
+  try {
+    // Fetch all posts from the WordPress API
+    allPosts = await getAllPosts();
+    console.log(`Fetched ${allPosts.length} posts from API`);
+  } catch (error) {
+    console.error('Error fetching posts for static paths:', error);
+  }
+  
+  // Use fallback posts if API request fails
+  if (!allPosts || allPosts.length === 0) {
+    console.log('Using fallback posts for static paths');
+    allPosts = getFallbackPosts();
+  }
+  
+  // Map each post to its slug for static path generation
+  return allPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// Get the post from props
+const { post } = Astro.props;
+
+// Handle case where post might not be found
+if (!post) {
+  console.log('No post found, redirecting to 404');
+  return Astro.redirect("/404");
+}
+---
+
+<BlogLayout post={post} />
