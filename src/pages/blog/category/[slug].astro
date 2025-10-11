@@ -2,54 +2,42 @@
 import BlogLayout from "@/layouts/BlogLayout.astro";
 import { getCategories, getSearchSerpaPosts, getFeaturedImageUrl, formatDate, getFallbackPosts } from "@/lib/wordpress";
 
-export const prerender = false;
+export async function getStaticPaths() {
+  let categories = [];
+  
+  try {
+    categories = await getCategories();
+    // Filter out SearchSerpa category as requested
+    categories = categories.filter(cat => cat.slug !== 'searchserpa');
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+  
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: { category }
+  }));
+}
 
-const { slug } = Astro.params;
-
-let category = null;
+const { category } = Astro.props;
 let posts = [];
 
 try {
-  // Fetch all categories
-  const categories = await getCategories();
+  // Fetch all SearchSerpa posts first
+  const allPosts = await getSearchSerpaPosts({ perPage: 100 });
   
-  // Find the requested category
-  category = categories.find(cat => cat.slug === slug);
-  
-  if (category) {
-    // Fetch SearchSerpa posts
-    const allPosts = await getSearchSerpaPosts({ perPage: 100 });
+  // Filter posts that have the current category
+  posts = allPosts.filter(post => {
+    if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][0]) {
+      return false;
+    }
     
-    // Filter posts in this category
-    posts = allPosts.filter(post => {
-      if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][0]) {
-        return false;
-      }
-      
-      return post._embedded['wp:term'][0].some(cat => cat.slug === slug);
-    });
-  }
+    // Check if post has the current category
+    return post._embedded['wp:term'][0].some(cat => cat.id === category.id);
+  });
 } catch (error) {
-  console.error("Error fetching category or posts:", error);
-}
-
-// If no category found or API error, use fallback
-if (!category || posts.length === 0) {
-  // Use fallback category
-  category = {
-    id: 0,
-    name: slug?.charAt(0).toUpperCase() + slug?.slice(1) || "Category",
-    description: "",
-    count: 0,
-    slug: slug || "",
-    link: "",
-    taxonomy: "category",
-    parent: 0
-  };
-  
-  // Use fallback posts
-  const fallbackPosts = getFallbackPosts();
-  posts = fallbackPosts;
+  console.error("Error fetching posts for category:", error);
+  posts = getFallbackPosts();
 }
 
 // Sort posts by date (newest first)

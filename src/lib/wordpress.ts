@@ -2,7 +2,7 @@
 // This service handles fetching blog posts from the WordPress REST API
 
 // API Base URL
-const WP_API_URL = 'https://blog.nxtmt.ventures/wp-json/wp/v2';
+const WP_API_URL = 'https://blog.nxtmt.ventures/wp/v2';
 
 // Types for WordPress API responses
 export interface WpPost {

@@ -2,52 +2,40 @@
 import BlogLayout from "@/layouts/BlogLayout.astro";
 import { getTags, getSearchSerpaPosts, getFeaturedImageUrl, formatDate, getFallbackPosts } from "@/lib/wordpress";
 
-export const prerender = false;
+export async function getStaticPaths() {
+  let tags = [];
+  
+  try {
+    tags = await getTags();
+  } catch (error) {
+    console.error("Error fetching tags:", error);
+  }
+  
+  return tags.map((tag) => ({
+    params: { slug: tag.slug },
+    props: { tag }
+  }));
+}
 
-const { slug } = Astro.params;
-
-let tag = null;
+const { tag } = Astro.props;
 let posts = [];
 
 try {
-  // Fetch all tags
-  const tags = await getTags();
+  // Fetch all SearchSerpa posts first
+  const allPosts = await getSearchSerpaPosts({ perPage: 100 });
   
-  // Find the requested tag
-  tag = tags.find(t => t.slug === slug);
-  
-  if (tag) {
-    // Fetch SearchSerpa posts
-    const allPosts = await getSearchSerpaPosts({ perPage: 100 });
+  // Filter posts that have the current tag
+  posts = allPosts.filter(post => {
+    if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][1]) {
+      return false;
+    }
     
-    // Filter posts with this tag
-    posts = allPosts.filter(post => {
-      if (!post._embedded || !post._embedded['wp:term'] || !post._embedded['wp:term'][1]) {
-        return false;
-      }
-      
-      return post._embedded['wp:term'][1].some(t => t.slug === slug);
-    });
-  }
+    // Check if post has the current tag
+    return post._embedded['wp:term'][1].some(t => t.id === tag.id);
+  });
 } catch (error) {
-  console.error("Error fetching tag or posts:", error);
-}
-
-// If no tag found or API error, use fallback
-if (!tag || posts.length === 0) {
-  // Use fallback tag
-  tag = {
-    id: 0,
-    name: slug?.charAt(0).toUpperCase() + slug?.slice(1) || "Tag",
-    description: "",
-    count: 0,
-    slug: slug || "",
-    taxonomy: "post_tag"
-  };
-  
-  // Use fallback posts
-  const fallbackPosts = getFallbackPosts();
-  posts = fallbackPosts;
+  console.error("Error fetching posts for tag:", error);
+  posts = getFallbackPosts();
 }
 
 // Sort posts by date (newest first)
