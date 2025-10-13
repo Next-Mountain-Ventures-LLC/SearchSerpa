@@ -3,8 +3,8 @@ import { Button } from './ui/button';
 import { Check, MountainSnow, Mountain, Info } from 'lucide-react';
 
 export default function Pricing() {
-  // Bloom.io form URLs
-  const baseCampSignupUrl = "https://nxtmt.bloom.io/BASECAMP";
+  // Sign-up URLs
+  const baseCampSignupUrl = "https://buy.stripe.com/test_28E14n7309Y9c5s7bx4ko00";
   const summitSignupUrl = "#";
 
   return (
