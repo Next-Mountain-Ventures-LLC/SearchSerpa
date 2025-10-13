@@ -3,8 +3,9 @@ import { Button } from './ui/button';
 import { Check, MountainSnow, Mountain, Info } from 'lucide-react';
 
 export default function Pricing() {
-  // URL to be replaced with actual Bloom.io form URL
-  const signupUrl = "#";
+  // Bloom.io form URLs
+  const baseCampSignupUrl = "https://nxtmt.bloom.io/BASECAMP";
+  const summitSignupUrl = "#";
 
   return (
     <section id="pricing" className="py-20 relative overflow-hidden">
@@ -55,7 +56,7 @@ export default function Pricing() {
                 Perfect for small businesses beginning their SEO journey, providing essential optimization.
               </p>
               
-              <Button onClick={() => window.open(signupUrl, '_blank')} className="w-full mb-6">
+              <Button onClick={() => window.open(baseCampSignupUrl, '_blank')} className="w-full mb-6">
                 Sign Up
               </Button>
             </div>
@@ -119,7 +120,7 @@ export default function Pricing() {
                 Comprehensive SEO and content solution for businesses serious about dominating search results.
               </p>
               
-              <Button variant="default" onClick={() => window.open(signupUrl, '_blank')} className="w-full mb-6">
+              <Button variant="default" onClick={() => window.open(summitSignupUrl, '_blank')} className="w-full mb-6">
                 Sign Up
               </Button>
             </div>
