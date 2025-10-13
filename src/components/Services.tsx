@@ -138,13 +138,24 @@ export default function Services() {
           </Card>
         </div>
         
-        <div className="mt-16 text-center">
-          <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Our focused approach means we deliver exceptional results in the areas that matter most to your business growth.
-          </p>
-          <Button size="lg" className="text-base" onClick={() => openAuditDialog()}>
-            Get Free Site Audit <Search className="ml-2 h-4 w-4" />
-          </Button>
+        <div className="mt-16">
+          <div className="text-center mb-10">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Get a free site audit and discover how we can improve your SEO performance.
+            </p>
+          </div>
+          
+          {/* Bloom Form */}
+          <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
+            <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
+              <script dangerouslySetInnerHTML={{
+                __html: `
+                  window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
+                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){bloomScript.src="https://code.bloom.io/widget.js?v="+t,document.head.appendChild(bloomScript)})}
+                `
+              }} />
+            </div>
+          </div>
         </div>
       </div>
     </section>
