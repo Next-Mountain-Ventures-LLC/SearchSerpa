@@ -23,14 +23,14 @@ export default function Hero() {
     <>
       <section className="relative pt-20 pb-16 overflow-hidden">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-accent/30 to-white -z-10" aria-hidden="true"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white via-accent/50 to-white -z-10" aria-hidden="true"></div>
         
         {/* Mountain outline SVG */}
         <div className="absolute bottom-0 left-0 right-0 h-32 -z-10" aria-hidden="true">
           <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="absolute bottom-0 w-full h-full">
             <path 
               d="M0,0 L0,120 L1200,120 L1200,0 L1080,80 L900,40 L720,100 L600,60 L450,90 L300,30 L150,70 L0,0 Z" 
-              fill="rgba(255, 255, 255, 0.8)"
+              fill="rgba(255, 255, 255, 0.9)"
             ></path>
           </svg>
         </div>
