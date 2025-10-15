@@ -5,7 +5,7 @@ import { Check, MountainSnow, Mountain, Info } from 'lucide-react';
 export default function Pricing() {
   // Sign-up URLs
   const baseCampSignupUrl = "https://buy.stripe.com/7sYcN62yE0rF4eGfyi5gc00";
-  const summitSignupUrl = "#";
+  const summitSignupUrl = "https://buy.stripe.com/6oU28sb5acan8uWfyi5gc01";
 
   return (
     <section id="pricing" className="py-20 relative overflow-hidden">
