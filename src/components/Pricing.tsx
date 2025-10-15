@@ -40,7 +40,7 @@ export default function Pricing() {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
                   <Mountain className="h-8 w-8 text-primary mr-2" />
-                  <h3 className="text-2xl font-bold">Base Camp</h3>
+                  <h3 className="text-2xl font-bold">Baser Camp</h3>
                 </div>
                 <div className="bg-accent/30 text-secondary py-1 px-3 rounded-full text-sm font-medium">
                   Monthly
