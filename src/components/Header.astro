@@ -5,15 +5,14 @@ import { buttonVariants } from "@/components/ui/button";
 <script>
   // Add event listeners for audit buttons
   document.addEventListener('DOMContentLoaded', () => {
-    // Function to open the audit dialog
-    const openAuditDialog = () => {
-      // Dispatch a custom event that the React components can listen for
-      document.dispatchEvent(new CustomEvent('openAuditDialog'));
+    // Function to scroll to the site audit form
+    const scrollToAuditForm = () => {
+      document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' });
     };
 
     // Add event listeners to all audit buttons
-    document.getElementById('nav-audit-btn')?.addEventListener('click', openAuditDialog);
-    document.getElementById('mobile-audit-btn')?.addEventListener('click', openAuditDialog);
+    document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditForm);
+    document.getElementById('mobile-audit-btn')?.addEventListener('click', scrollToAuditForm);
   });
 </script>
 
@@ -47,12 +46,6 @@ import { buttonVariants } from "@/components/ui/button";
           class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Pricing
-        </a>
-        <a
-          href="#referrals"
-          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
-        >
-          Referrals
         </a>
         <button
           id="nav-audit-btn"

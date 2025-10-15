@@ -146,7 +146,7 @@ export default function Services() {
           </div>
           
           {/* Bloom Form */}
-          <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
+          <div id="site-audit-form" className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
             <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
               <script dangerouslySetInnerHTML={{
                 __html: `

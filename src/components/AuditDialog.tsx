@@ -55,12 +55,12 @@ export const AuditDialog = () => {
   React.useEffect(() => {
     auditDialogStore.setOpen = setIsOpen;
     
-    // Optional: Show popup after 15 seconds
-    const timer = setTimeout(() => {
-      setIsOpen(true);
-    }, 15000);
-    
-    return () => clearTimeout(timer);
+    // Popup disabled - but code preserved for future use
+    // const timer = setTimeout(() => {
+    //   setIsOpen(true);
+    // }, 15000);
+    // 
+    // return () => clearTimeout(timer);
   }, []);
   
   return (

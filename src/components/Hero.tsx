@@ -50,7 +50,7 @@ export default function Hero() {
                 We guide your business through the shifting terrain of SEO, so you can focus on growing your business.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button size="lg" className="text-base" onClick={openAuditDialog}>
+                <Button size="lg" className="text-base" onClick={() => document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' })}>
                   Get Free Site Audit
                 </Button>
                 
