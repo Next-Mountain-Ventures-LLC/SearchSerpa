@@ -92,7 +92,10 @@ export default function WhyDifferent() {
             <p className="mb-4 text-foreground/80">
               Let us be your guide to SEO success with our focused expertise.
             </p>
-            <button className="bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors duration-300">
+            <button 
+              onClick={() => document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' })} 
+              className="bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors duration-300"
+            >
               Get Your Free Site Audit
             </button>
           </div>

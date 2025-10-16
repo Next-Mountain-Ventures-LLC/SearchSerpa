@@ -3,11 +3,13 @@ import { Dialog, DialogContent } from './ui/dialog';
 import { SearchCheck, ArrowRight } from 'lucide-react';
 import { Button } from './ui/button';
 
+
 interface SiteAuditFormProps {
   formUrl: string;
+  onAction: () => void;
 }
 
-const SiteAuditForm = ({ formUrl }: SiteAuditFormProps) => {
+const SiteAuditForm = ({ formUrl, onAction }: SiteAuditFormProps) => {
   return (
     <div className="text-center">
       <div className="flex justify-center mb-6">
@@ -17,7 +19,10 @@ const SiteAuditForm = ({ formUrl }: SiteAuditFormProps) => {
       <p className="mb-6 text-muted-foreground">
         We'll analyze your site and deliver a comprehensive report within the same business day if ordered before 3 PM CST.
       </p>
-      <Button className="w-full" onClick={() => window.open(formUrl, '_blank')}>
+      <Button 
+        className="w-full" 
+        onClick={onAction}
+      >
         Request Your Free Audit <ArrowRight className="ml-2 h-4 w-4" />
       </Button>
       <p className="mt-4 text-sm text-muted-foreground">
@@ -66,7 +71,13 @@ export const AuditDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-md">
-        <SiteAuditForm formUrl={formUrl} />
+        <SiteAuditForm 
+          formUrl={formUrl} 
+          onAction={() => {
+            setIsOpen(false); // Close the dialog
+            document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' });
+          }} 
+        />
       </DialogContent>
     </Dialog>
   );
