@@ -129,8 +129,8 @@ export default function BlogCarousel() {
     // Extract excerpt and clean HTML tags
     let excerpt = post.excerpt?.rendered || '';
     excerpt = excerpt.replace(/<\/?[^>]+(>|$)/g, '').trim();
-    if (excerpt.length > 100) {
-      excerpt = excerpt.substring(0, 100) + '...';
+    if (excerpt.length > 120) {
+      excerpt = excerpt.substring(0, 120) + '...';
     }
     
     // Extract title and truncate if needed
@@ -141,14 +141,14 @@ export default function BlogCarousel() {
     }
 
     return (
-      <div className="flex flex-col overflow-hidden bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300" style={{ maxHeight: "400px" }}>
+      <div className="flex flex-col overflow-hidden bg-card border border-border rounded-lg shadow-sm hover:shadow-md transition-all duration-300 h-full w-full" style={{ maxHeight: "450px" }}>
         {/* Featured image */}
-        <a href={`/blog/${post.slug}`} className="block w-full h-32 relative overflow-hidden">
+        <a href={`/blog/${post.slug}`} className="block w-full h-48 relative overflow-hidden">
           {featuredImage ? (
             <img 
               src={featuredImage} 
               alt={title || 'Blog post'} 
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105 aspect-video"
             />
           ) : (
             <div className="w-full h-full bg-muted flex items-center justify-center">
@@ -158,21 +158,21 @@ export default function BlogCarousel() {
         </a>
         
         {/* Content */}
-        <div className="flex flex-col flex-grow p-3">
+        <div className="flex flex-col flex-grow p-4">
           <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
             <Calendar size={14} />
             <time dateTime={post.date}>{date.formatted}</time>
           </div>
           
-          <h3 className="text-lg font-bold mb-3 line-clamp-2">
+          <h3 className="text-lg font-bold mb-2 line-clamp-2">
             {title}
           </h3>
           
-          <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+          <p className="text-muted-foreground text-sm mb-3 line-clamp-3">
             {excerpt}
           </p>
           
-          <div className="mt-auto pt-4">
+          <div className="mt-auto pt-3 border-t border-border/50">
             <a 
               href={`/blog/${post.slug}`}
               className="inline-flex items-center gap-1 text-primary font-medium hover:underline text-sm"
@@ -187,8 +187,8 @@ export default function BlogCarousel() {
   };
 
   return (
-    <section className="py-8 bg-accent/5">
-      <div className="container">
+    <section className="py-12 bg-accent/5">
+      <div className="container mx-auto px-4">
         <div className="text-center mb-5">
           <h2 className="text-2xl md:text-3xl font-bold mb-3">
             SEO <span className="text-primary">Insights</span> & Resources
@@ -236,18 +236,18 @@ export default function BlogCarousel() {
             </div>
             
             {/* Main carousel */}
-            <div className="relative overflow-hidden" style={{ paddingBottom: "32px" }}>
+            <div className="relative overflow-hidden w-full" style={{ paddingBottom: "32px" }}>
               <div 
                 ref={carouselRef}
-                className="flex overflow-x-hidden snap-x snap-mandatory scrollbar-hide"
+                className="flex overflow-x-hidden snap-x snap-mandatory scrollbar-hide w-full"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', scrollBehavior: 'smooth' }}
               >
                 {slides.map((slideGroup, slideIndex) => (
                   <div 
                     key={`slide-${slideIndex}`}
-                    className="min-w-full flex-shrink-0 snap-center"
+                    className="min-w-full flex-shrink-0 snap-center w-full"
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full mx-auto">
                       {slideGroup.map(post => (
                         <BlogPostCard key={post.id} post={post} />
                       ))}
