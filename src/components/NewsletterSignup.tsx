@@ -29,11 +29,35 @@ export default function NewsletterSignup() {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate API submission
     try {
-      // In a real implementation, you would submit to a backend API
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Form submitted:', { email, firstName, lastName, phone });
+      // Create FormData object for proper multipart/form-data submission
+      const formElement = e.target as HTMLFormElement;
+      const formData = new FormData(formElement);
+      
+      // Add form_name field if not already included
+      if (!formData.has('form_name')) {
+        formData.append('form_name', 'SEO Newsletter Signup');
+      }
+      
+      // Log the form data
+      console.log('Form submitted:', {
+        form_name: formData.get('form_name'),
+        email: formData.get('email'),
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        phone: formData.get('phone')
+      });
+      
+      // Submit the form to the API endpoint
+      const response = await fetch('https://api.new.website/api/submit-form/', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Form submission failed: ${response.status}`);
+      }
+      
       setIsSubmitted(true);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -73,13 +97,20 @@ export default function NewsletterSignup() {
             <div className="bg-muted/30 rounded-lg p-8 border border-border/40 shadow-sm">
               {step === 1 ? (
                 // Step 1: Email only
-                <form onSubmit={handleNextStep} className="space-y-4">
+                <form 
+                  onSubmit={handleNextStep} 
+                  className="space-y-4"
+                  method="post"
+                  encType="multipart/form-data"
+                  data-form-type="utility"
+                >
                   <div>
                     <Label htmlFor="email" className="text-base font-medium">
                       Email Address
                     </Label>
                     <Input 
                       id="email" 
+                      name="email"
                       type="email" 
                       placeholder="your@email.com" 
                       value={email}
@@ -87,6 +118,7 @@ export default function NewsletterSignup() {
                       className="mt-1"
                       required
                     />
+                    <input type="hidden" name="form_name" value="SEO Newsletter Signup" />
                   </div>
                   <Button 
                     type="submit" 
@@ -97,7 +129,15 @@ export default function NewsletterSignup() {
                 </form>
               ) : (
                 // Step 2: Name and phone fields
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form 
+                  onSubmit={handleSubmit} 
+                  className="space-y-4"
+                  method="post"
+                  action="https://api.new.website/api/submit-form/"
+                  encType="multipart/form-data"
+                >
+                  <input type="hidden" name="form_name" value="SEO Newsletter Signup" />
+                  <input type="hidden" name="email" value={email} />
                   <p className="text-sm text-primary mb-4">
                     <strong>Email:</strong> {email} <Button variant="link" onClick={() => setStep(1)} className="p-0 h-auto">Edit</Button>
                   </p>
@@ -109,6 +149,7 @@ export default function NewsletterSignup() {
                       </Label>
                       <Input 
                         id="firstName" 
+                        name="firstName"
                         type="text" 
                         placeholder="First name" 
                         value={firstName}
@@ -123,6 +164,7 @@ export default function NewsletterSignup() {
                       </Label>
                       <Input 
                         id="lastName" 
+                        name="lastName"
                         type="text" 
                         placeholder="Last name" 
                         value={lastName}
@@ -139,8 +181,9 @@ export default function NewsletterSignup() {
                     </Label>
                     <Input 
                       id="phone" 
+                      name="phone"
                       type="tel" 
-                      placeholder="Your phone number" 
+                      placeholder="Your phone number (optional)" 
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="mt-1"
