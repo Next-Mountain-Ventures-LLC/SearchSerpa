@@ -75,7 +75,7 @@ export const AuditDialog = () => {
           formUrl={formUrl} 
           onAction={() => {
             setIsOpen(false); // Close the dialog
-            document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('site-audit-section')?.scrollIntoView({ behavior: 'smooth' });
           }} 
         />
       </DialogContent>

@@ -93,7 +93,7 @@ export default function WhyDifferent() {
               Let us be your guide to SEO success with our focused expertise.
             </p>
             <button 
-              onClick={() => document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' })} 
+              onClick={() => document.getElementById('site-audit-section')?.scrollIntoView({ behavior: 'smooth' })} 
               className="bg-primary text-white px-6 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors duration-300"
             >
               Get Your Free Site Audit
