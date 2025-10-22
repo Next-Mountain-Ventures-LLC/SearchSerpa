@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <!-- MountainSnow icon from Lucide -->
-  <path d="m2 22 9.3-9.3a1 1 0 0 1 1.4 0l5.3 5.3a1 1 0 0 1 0 1.4L16.5 21H4c-1.5 0-2-1-2-2Z" />
-  <path d="m9 11-5.3 5.3c-.4.4-.7 1-.7 1.7 0 .3 0 .5.2.6l.6.6c.3.3.7.4 1.2.4h14c.3 0 .5 0 .6-.2l.4-.4c.4-.4.4-1 .2-1.4L13.2 9a1 1 0 0 0-1.4 0L9 11.1Z" />
-  <path d="m17 7-5 5M14 10l6 6" />
-  <path d="M14.5 6.5a1 1 0 0 1 0 2 1 1 0 0 1 0-2Z" />
-  <path d="M21.5 11.5a1 1 0 0 1 0 2 1 1 0 0 1 0-2Z" />
-  <path d="M16.5 11.5a1 1 0 0 1 0 2 1 1 0 0 1 0-2Z" />
-  <path d="M17.5 6.5a1 1 0 0 1 0 2 1 1 0 0 1 0-2Z" />
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none">
+  <!-- Simple Mountain Icon matching the hero section -->
+  <path 
+    d="M2 22L7 14L12 7L17 14L22 22H2Z"
+    stroke="#FF5722"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path 
+    d="M6 22L12 11L18 22"
+    stroke="#FF5722"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path 
+    d="M2 22H22"
+    stroke="#FF5722"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
   <style>
     path { 
       stroke: #FF5722; 
