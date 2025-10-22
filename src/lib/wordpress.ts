@@ -465,7 +465,39 @@ export function getFallbackPosts(): WpPost[] {
       },
       featured_media: 0,
       categories: [1],
-      tags: [1, 2]
+      tags: [1, 2],
+      _embedded: {
+        'wp:term': [
+          [
+            {
+              id: 1,
+              name: 'Small Business',
+              slug: 'small-business',
+              taxonomy: 'category'
+            },
+            {
+              id: 6,
+              name: 'Local SEO',
+              slug: 'local-seo',
+              taxonomy: 'category'
+            }
+          ],
+          [
+            {
+              id: 1,
+              name: 'SEO',
+              slug: 'seo',
+              taxonomy: 'post_tag'
+            },
+            {
+              id: 2,
+              name: 'Small Business',
+              slug: 'small-business',
+              taxonomy: 'post_tag'
+            }
+          ]
+        ]
+      }
     },
     {
       id: 2,
@@ -487,7 +519,39 @@ export function getFallbackPosts(): WpPost[] {
       },
       featured_media: 0,
       categories: [1],
-      tags: [3, 4]
+      tags: [3, 4],
+      _embedded: {
+        'wp:term': [
+          [
+            {
+              id: 1,
+              name: 'Technical SEO',
+              slug: 'technical-seo',
+              taxonomy: 'category'
+            },
+            {
+              id: 7,
+              name: 'Website Performance',
+              slug: 'website-performance',
+              taxonomy: 'category'
+            }
+          ],
+          [
+            {
+              id: 3,
+              name: 'Technical',
+              slug: 'technical',
+              taxonomy: 'post_tag'
+            },
+            {
+              id: 4,
+              name: 'Performance',
+              slug: 'performance',
+              taxonomy: 'post_tag'
+            }
+          ]
+        ]
+      }
     },
     {
       id: 3,
@@ -509,7 +573,39 @@ export function getFallbackPosts(): WpPost[] {
       },
       featured_media: 0,
       categories: [1],
-      tags: [2, 5]
+      tags: [2, 5],
+      _embedded: {
+        'wp:term': [
+          [
+            {
+              id: 1,
+              name: 'Content Marketing',
+              slug: 'content-marketing',
+              taxonomy: 'category'
+            },
+            {
+              id: 8,
+              name: 'SEO Strategy',
+              slug: 'seo-strategy',
+              taxonomy: 'category'
+            }
+          ],
+          [
+            {
+              id: 2,
+              name: 'Content',
+              slug: 'content',
+              taxonomy: 'post_tag'
+            },
+            {
+              id: 5,
+              name: 'Strategy',
+              slug: 'strategy',
+              taxonomy: 'post_tag'
+            }
+          ]
+        ]
+      }
     }
   ];
 }

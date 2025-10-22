@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { getSearchSerpaPosts, getFallbackPosts, getFeaturedImageUrl, formatDate, parseDate, type WpPost } from '@/lib/wordpress';
-import { ChevronLeft, ChevronRight, Calendar, ArrowRight, Clock } from 'lucide-react';
+import { getSearchSerpaPosts, getFallbackPosts, getFeaturedImageUrl, formatDate, parseDate, getTerms, type WpPost } from '@/lib/wordpress';
+import { ChevronLeft, ChevronRight, Calendar, ArrowRight, Tag } from 'lucide-react';
 
 export default function BlogCarousel() {
   const [posts, setPosts] = useState<WpPost[]>([]);
@@ -126,6 +126,9 @@ export default function BlogCarousel() {
     // Format date
     const date = parseDate(post.date);
     
+    // Get categories and tags
+    const { categories } = getTerms(post);
+    
     // Extract excerpt and clean HTML tags
     let excerpt = post.excerpt?.rendered || '';
     excerpt = excerpt.replace(/<\/?[^>]+(>|$)/g, '').trim();
@@ -159,6 +162,23 @@ export default function BlogCarousel() {
         
         {/* Content */}
         <div className="flex flex-col flex-grow p-4">
+          {/* Categories */}
+          {categories && categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {categories.map((category) => (
+                <a 
+                  key={category.id} 
+                  href={`/blog/category/${category.slug}`}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+                >
+                  <Tag size={10} className="opacity-70" />
+                  {category.name}
+                </a>
+              ))}
+            </div>
+          )}
+          
+          {/* Date */}
           <div className="flex items-center gap-2 mb-3 text-xs text-muted-foreground">
             <Calendar size={14} />
             <time dateTime={post.date}>{date.formatted}</time>
