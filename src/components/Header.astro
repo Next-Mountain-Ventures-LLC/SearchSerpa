@@ -5,14 +5,22 @@ import { buttonVariants } from "@/components/ui/button";
 <script>
   // Add event listeners for audit buttons
   document.addEventListener('DOMContentLoaded', () => {
-    // Function to scroll to the site audit form
-    const scrollToAuditForm = () => {
-      document.getElementById('site-audit-form')?.scrollIntoView({ behavior: 'smooth' });
+    // Function to scroll to the site audit section
+    const scrollToAuditSection = () => {
+      document.getElementById('site-audit-section')?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'  // Align the top of the element with the top of the viewport
+      });
+      
+      // Add extra offset to account for fixed header
+      setTimeout(() => {
+        window.scrollBy(0, -100); // Scroll up a bit to show the title text
+      }, 500); // Wait for the initial scroll to complete
     };
 
     // Add event listeners to all audit buttons
-    document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditForm);
-    document.getElementById('mobile-audit-btn')?.addEventListener('click', scrollToAuditForm);
+    document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditSection);
+    document.getElementById('mobile-audit-btn')?.addEventListener('click', scrollToAuditSection);
   });
 </script>
 

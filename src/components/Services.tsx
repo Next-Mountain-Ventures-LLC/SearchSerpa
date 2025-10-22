@@ -139,7 +139,8 @@ export default function Services() {
         </div>
         
         <div className="mt-16">
-          <div id="site-audit-section" className="text-center mb-10 pt-8">
+          <div id="site-audit-section" className="text-center mb-10 pt-20 pb-4">
+            <h3 className="text-2xl font-bold mb-3">Get a Free Site Audit</h3>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Get a free site audit and discover how we can improve your SEO performance.
             </p>
