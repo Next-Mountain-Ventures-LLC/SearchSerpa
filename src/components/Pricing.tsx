@@ -173,10 +173,7 @@ export default function Pricing() {
               Once our SEO work is published, it builds your domain authority forever. Unlike advertising, the content and link-building we implement continue working for you long-term.
             </p>
             <div className="inline-flex items-center text-primary">
-              <span className="text-sm font-medium">Have questions about which package is right for you?</span>
-              <Button variant="link" className="p-0 h-auto ml-2 text-primary" onClick={() => window.open('#', '_blank')}>
-                Get in touch
-              </Button>
+              <span className="text-sm font-medium">Have questions about which package is right for you? Click "Get Free Site Audit" in the navigation bar</span>
             </div>
           </div>
         </div>
