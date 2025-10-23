@@ -5,6 +5,8 @@ import { Label } from './ui/label';
 import { Mail, ArrowRight } from 'lucide-react';
 
 export default function NewsletterSignup() {
+  // Create a ref for the form
+  const formRef = React.useRef<HTMLFormElement>(null);
   // Track multi-step form state
   const [step, setStep] = useState(1);
   
@@ -37,6 +39,30 @@ export default function NewsletterSignup() {
       // Add form_name field if not already included
       if (!formData.has('form_name')) {
         formData.append('form_name', 'SEO Newsletter Signup');
+      }
+      
+      // Silently format the phone number by adding +1 if needed
+      const phoneValue = formData.get('phone') as string;
+      if (phoneValue && phoneValue.trim() !== '') {
+        // Remove any non-digit characters
+        const digitsOnly = phoneValue.replace(/\D/g, '');
+        
+        // Add +1 prefix if needed
+        let formattedPhone: string;
+        if (digitsOnly.startsWith('1')) {
+          formattedPhone = `+${digitsOnly}`;
+        } else {
+          formattedPhone = `+1${digitsOnly}`;
+        }
+        
+        // Replace the original phone value with the formatted one
+        formData.set('phone', formattedPhone);
+        
+        // Also update the hidden input for form action submission
+        const phoneInput = formElement.querySelector('input[name="phone"]') as HTMLInputElement;
+        if (phoneInput) {
+          phoneInput.value = formattedPhone;
+        }
       }
       
       // Log the form data
@@ -139,11 +165,13 @@ export default function NewsletterSignup() {
               ) : (
                 // Step 2: Name and phone fields
                 <form 
+                  ref={formRef}
                   onSubmit={handleSubmit} 
                   className="space-y-4"
                   method="post"
                   action="https://api.new.website/api/submit-form/"
                   encType="multipart/form-data"
+                  id="newsletter-form"
                 >
                   <input type="hidden" name="form_name" value="SEO Newsletter Signup" />
                   <input type="hidden" name="email" value={email} />
@@ -189,17 +217,22 @@ export default function NewsletterSignup() {
                       Phone Number <span className="text-xs text-muted-foreground">(optional)</span>
                     </Label>
                     <Input 
-                      id="phone" 
-                      name="phone"
+                      id="phone-display" 
                       type="tel" 
                       placeholder="Phone number (optional)" 
                       pattern="[0-9]*"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
+                      onChange={(e) => {
+                        // Only allow numbers
+                        const input = e.target.value.replace(/[^0-9]/g, '');
+                        setPhone(input);
+                      }}
                       className="mt-1"
                       inputMode="tel"
                       autoComplete="tel"
                     />
+                    {/* Hidden input for storing the formatted phone number */}
+                    <input type="hidden" name="phone" value={phone} />
                     <p className="text-xs text-muted-foreground mt-1">
                       Helps deliver time-sensitive SEO alerts and personalized tips to improve your rankings.
                     </p>
