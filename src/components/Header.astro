@@ -67,13 +67,31 @@ import { buttonVariants } from "@/components/ui/button";
         >
           Get Free Audit
         </button>
+        <a
+          href="https://nxtmt.bloom.io/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class={buttonVariants({ variant: 'outline' })}
+        >
+          Login
+        </a>
       </nav>
-      <button
-        id="mobile-audit-btn"
-        class={`md:hidden ${buttonVariants({ variant: 'default', size: 'sm' })}`}
-      >
-        Get Free Audit
-      </button>
+      <div class="md:hidden flex items-center space-x-2">
+        <button
+          id="mobile-audit-btn"
+          class={buttonVariants({ variant: 'default', size: 'sm' })}
+        >
+          Get Free Audit
+        </button>
+        <a
+          href="https://nxtmt.bloom.io/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class={buttonVariants({ variant: 'outline', size: 'sm' })}
+        >
+          Login
+        </a>
+      </div>
     </div>
   </div>
 </header>
