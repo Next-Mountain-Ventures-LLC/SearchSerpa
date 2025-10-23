@@ -15,7 +15,103 @@ const { title, description, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
-    <link rel="stylesheet" href="/styles/bloom-override.css" id="bloom-override-styles" />
+    <!-- Inline styles for Bloom overrides (high priority) -->
+    <style id="bloom-override-styles">
+      /* Maximum priority overrides for Bloom button colors */
+      /* The !important flag and very specific selectors ensure these take precedence */
+      
+      /* Target the launcher button with maximum specificity */
+      body [class*="bloom"][class*="button"],
+      body [class*="bloom"][class*="Button"],
+      body [class*="bloom-launcher"],
+      body div[class*="bloom"] > button,
+      body #bloom-container button,
+      body .bloom-widget button,
+      body .bloom-launcher,
+      body .bloom-chat-button,
+      body .bloom-launcher-button,
+      body .bloom-button--primary,
+      body .bloom-primary-button,
+      body #bloom-launcher-button,
+      /* Additional specificity by repeating the selector patterns */
+      body button[class*="bloom"],
+      body div[id*="bloom"] button,
+      body iframe[id*="bloom"] button,
+      body [data-bloom] button,
+      body #bloom-widget-container button,
+      body .bloom-widget-container button {
+        background-color: hsl(199 89% 30%) !important;
+        background: hsl(199 89% 30%) !important;
+        border-color: hsl(199 89% 30%) !important;
+        border: 1px solid hsl(199 89% 30%) !important;
+        color: white !important;
+      }
+
+      /* Target hover states with maximum specificity */
+      body [class*="bloom"][class*="button"]:hover,
+      body [class*="bloom"][class*="Button"]:hover,
+      body [class*="bloom-launcher"]:hover,
+      body div[class*="bloom"] > button:hover,
+      body #bloom-container button:hover,
+      body .bloom-widget button:hover,
+      body .bloom-launcher:hover,
+      body .bloom-chat-button:hover,
+      body .bloom-launcher-button:hover,
+      body .bloom-button--primary:hover,
+      body .bloom-primary-button:hover,
+      body #bloom-launcher-button:hover,
+      /* Additional specificity by repeating the selector patterns */
+      body button[class*="bloom"]:hover,
+      body div[id*="bloom"] button:hover,
+      body iframe[id*="bloom"] button:hover,
+      body [data-bloom] button:hover,
+      body #bloom-widget-container button:hover,
+      body .bloom-widget-container button:hover {
+        background-color: hsl(199 89% 35%) !important;
+        background: hsl(199 89% 35%) !important;
+        border-color: hsl(199 89% 35%) !important;
+        border: 1px solid hsl(199 89% 35%) !important;
+        color: white !important;
+      }
+
+      /* Target any SVG icons with maximum specificity */
+      body [class*="bloom"][class*="button"] svg,
+      body [class*="bloom"][class*="Button"] svg,
+      body [class*="bloom-launcher"] svg,
+      body div[class*="bloom"] > button svg,
+      body #bloom-container button svg,
+      body .bloom-widget svg,
+      body .bloom-launcher svg,
+      body .bloom-launcher-icon,
+      body .bloom-icon,
+      body .bloom-chat-icon,
+      /* Additional specificity */
+      body button[class*="bloom"] svg,
+      body div[id*="bloom"] button svg,
+      body [data-bloom] button svg {
+        fill: white !important;
+        color: white !important;
+        stroke: white !important;
+      }
+      
+      /* Target any elements with primary color */
+      body [class*="bloom"][class*="primary"],
+      body .bloom-primary-color,
+      body .bloom-primary-text,
+      body .bloom-primary-highlight,
+      body .bloom-accent,
+      body .bloom-highlight {
+        color: hsl(199 89% 30%) !important;
+      }
+
+      /* Target any elements with primary border */
+      body [class*="bloom"][class*="primary-border"],
+      body .bloom-primary-border,
+      body .bloom-border,
+      body .bloom-outlined {
+        border-color: hsl(199 89% 30%) !important;
+      }
+    </style>
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
@@ -27,5 +123,43 @@ const { title, description, ogImage } = Astro.props;
       <script src="https://api.new.website/static/new-website.js"></script>
       <Footer />
     </div>
+    
+    <!-- Script to dynamically force Bloom.io button color -->
+    <script is:inline>
+      // Function to apply blue styling to Bloom elements
+      function forceBlueBloomButton() {
+        // Find all elements that might be the Bloom button
+        const bloomButtons = document.querySelectorAll(
+          '[class*="bloom"][class*="button"],[class*="bloom"][class*="Button"],[class*="bloom-launcher"],div[class*="bloom"] > button,#bloom-container button,.bloom-widget button,.bloom-launcher,.bloom-chat-button,.bloom-launcher-button'
+        );
+        
+        // Apply blue color to all matching elements
+        bloomButtons.forEach(function(button) {
+          button.style.backgroundColor = 'hsl(199 89% 30%)';
+          button.style.borderColor = 'hsl(199 89% 30%)';
+        });
+      }
+      
+      // Apply immediately for any elements already on the page
+      document.addEventListener('DOMContentLoaded', forceBlueBloomButton);
+      
+      // Apply every second to catch delayed loading
+      setInterval(forceBlueBloomButton, 1000);
+      
+      // Create an observer to watch for when Bloom button is added to DOM
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+            forceBlueBloomButton();
+          }
+        });
+      });
+      
+      // Start observing the document body for changes
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    </script>
   </body>
 </html>

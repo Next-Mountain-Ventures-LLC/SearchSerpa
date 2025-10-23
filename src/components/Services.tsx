@@ -148,31 +148,39 @@ export default function Services() {
           {/* Bloom Form */}
           <div id="site-audit-form" className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
             <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
+              {/* Bloom script with override */}
               <script dangerouslySetInnerHTML={{
                 __html: `
-                  // Ensure the Bloom CSS override is loaded first
+                  // Bloom initialization with blue button color
                   (function() {
-                    // First load our custom CSS to override Bloom styles
-                    var bloomStyle = document.createElement("link");
-                    bloomStyle.rel = "stylesheet";
-                    bloomStyle.href = "/styles/bloom-override.css";
-                    bloomStyle.id = "bloom-override-styles";
-                    document.head.appendChild(bloomStyle);
+                    // Initialize Bloom
+                    window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
                     
-                    // Then initialize Bloom with a slight delay to ensure our CSS is applied
-                    setTimeout(function() {
-                      window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
-                      if(void 0===window.bloomScript) {
-                        var bloomScript = document.createElement("script");
-                        bloomScript.async = true;
-                        fetch("https://code.bloom.io/version?t=" + Date.now())
-                          .then(function(t) { return t.text(); })
-                          .then(function(t) {
-                            bloomScript.src = "https://code.bloom.io/widget.js?v=" + t;
-                            document.head.appendChild(bloomScript);
-                          });
-                      }
-                    }, 100); // Small delay to ensure our CSS is loaded first
+                    if(void 0===window.bloomScript) {
+                      // First load our style override
+                      var style = document.createElement('style');
+                      style.textContent = 
+                        '[class*="bloom"][class*="button"],[class*="bloom"][class*="Button"],[class*="bloom-launcher"],div[class*="bloom"] > button,#bloom-container button,.bloom-widget button,.bloom-launcher,.bloom-chat-button,.bloom-launcher-button,.bloom-button--primary,.bloom-primary-button,#bloom-launcher-button{background-color:hsl(199 89% 30%) !important;border-color:hsl(199 89% 30%) !important}' +
+                        '[class*="bloom"][class*="button"]:hover,[class*="bloom"][class*="Button"]:hover,[class*="bloom-launcher"]:hover,div[class*="bloom"] > button:hover,#bloom-container button:hover,.bloom-widget button:hover,.bloom-launcher:hover,.bloom-chat-button:hover,.bloom-launcher-button:hover,.bloom-button--primary:hover,.bloom-primary-button:hover,#bloom-launcher-button:hover{background-color:hsl(199 89% 35%) !important;border-color:hsl(199 89% 35%) !important}';
+                      document.head.appendChild(style);
+
+                      // Then load Bloom script
+                      var bloomScript = document.createElement("script");
+                      bloomScript.async = true;
+                      fetch("https://code.bloom.io/version?t=" + Date.now())
+                        .then(function(t) { return t.text(); })
+                        .then(function(t) {
+                          bloomScript.src = "https://code.bloom.io/widget.js?v=" + t;
+                          document.head.appendChild(bloomScript);
+                          
+                          // After Bloom script loads, add our override script
+                          bloomScript.onload = function() {
+                            var overrideScript = document.createElement("script");
+                            overrideScript.src = "/scripts/bloom-override.js";
+                            document.head.appendChild(overrideScript);
+                          };
+                        });
+                    }
                   })();
                 `
               }} />
