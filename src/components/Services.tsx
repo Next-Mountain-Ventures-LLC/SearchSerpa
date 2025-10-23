@@ -150,18 +150,30 @@ export default function Services() {
             <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
               <script dangerouslySetInnerHTML={{
                 __html: `
-                  window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
-                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){
-                    // Add stylesheet to override Bloom colors
+                  // Ensure the Bloom CSS override is loaded first
+                  (function() {
+                    // First load our custom CSS to override Bloom styles
                     var bloomStyle = document.createElement("link");
                     bloomStyle.rel = "stylesheet";
                     bloomStyle.href = "/styles/bloom-override.css";
+                    bloomStyle.id = "bloom-override-styles";
                     document.head.appendChild(bloomStyle);
                     
-                    // Load the Bloom widget script
-                    bloomScript.src="https://code.bloom.io/widget.js?v="+t;
-                    document.head.appendChild(bloomScript);
-                  })}
+                    // Then initialize Bloom with a slight delay to ensure our CSS is applied
+                    setTimeout(function() {
+                      window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
+                      if(void 0===window.bloomScript) {
+                        var bloomScript = document.createElement("script");
+                        bloomScript.async = true;
+                        fetch("https://code.bloom.io/version?t=" + Date.now())
+                          .then(function(t) { return t.text(); })
+                          .then(function(t) {
+                            bloomScript.src = "https://code.bloom.io/widget.js?v=" + t;
+                            document.head.appendChild(bloomScript);
+                          });
+                      }
+                    }, 100); // Small delay to ensure our CSS is loaded first
+                  })();
                 `
               }} />
             </div>
