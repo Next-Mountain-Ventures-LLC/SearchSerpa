@@ -15,6 +15,7 @@ const { title, description, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <link rel="stylesheet" href="/styles/bloom-override.css" />
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">

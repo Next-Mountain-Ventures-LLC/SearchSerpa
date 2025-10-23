@@ -151,7 +151,17 @@ export default function Services() {
               <script dangerouslySetInnerHTML={{
                 __html: `
                   window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
-                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){bloomScript.src="https://code.bloom.io/widget.js?v="+t,document.head.appendChild(bloomScript)})}
+                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){
+                    // Add stylesheet to override Bloom colors
+                    var bloomStyle = document.createElement("link");
+                    bloomStyle.rel = "stylesheet";
+                    bloomStyle.href = "/styles/bloom-override.css";
+                    document.head.appendChild(bloomStyle);
+                    
+                    // Load the Bloom widget script
+                    bloomScript.src="https://code.bloom.io/widget.js?v="+t;
+                    document.head.appendChild(bloomScript);
+                  })}
                 `
               }} />
             </div>
