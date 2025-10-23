@@ -192,10 +192,13 @@ export default function NewsletterSignup() {
                       id="phone" 
                       name="phone"
                       type="tel" 
-                      placeholder="Your phone number (optional)" 
+                      placeholder="Phone number (optional)" 
+                      pattern="[0-9]*"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="mt-1"
+                      inputMode="tel"
+                      autoComplete="tel"
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       Helps deliver time-sensitive SEO alerts and personalized tips to improve your rankings.
