@@ -3,9 +3,24 @@ import { buttonVariants } from "@/components/ui/button";
 import MobileMenu from "@/components/MobileMenu.astro";
 ---
 
-<script>
-  // Add event listeners for audit buttons
+<script is:inline>
+  // Add event listeners for audit buttons and ensure header elements are visible
   document.addEventListener('DOMContentLoaded', () => {
+    // Force logo and menu button visibility
+    const logo = document.querySelector('header .text-xl');
+    const menuButton = document.getElementById('mobile-menu-toggle');
+    
+    if (logo) {
+      logo.style.visibility = 'visible';
+      logo.style.display = 'inline-block';
+      console.log('Made logo visible:', logo);
+    }
+    
+    if (menuButton) {
+      menuButton.style.visibility = 'visible';
+      menuButton.style.display = 'flex';
+      console.log('Made menu button visible:', menuButton);
+    }
     // Function to scroll to the site audit section
     const scrollToAuditSection = (e) => {
       if (e) e.preventDefault();
@@ -34,20 +49,20 @@ import MobileMenu from "@/components/MobileMenu.astro";
 </script>
 
 <header
-  class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
+  class="bg-white sticky top-0 z-50 w-full border-b shadow-sm !visible"
 >
   <div
-    class="container flex h-16 items-center justify-between"
+    class="container flex h-16 items-center justify-between !visible"
   >
     <!-- Logo Section -->
-    <div class="flex gap-6 md:gap-10">
-      <a href="/" class="flex items-center space-x-2">
-        <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
+    <div class="flex gap-6 md:gap-10 !visible">
+      <a href="/" class="flex items-center space-x-2 !visible">
+        <span class="inline-block font-bold text-xl text-black !visible">Search<span class="text-primary !visible">Serpa</span></span>
       </a>
     </div>
 
     <!-- Navigation Section -->
-    <div class="flex items-center space-x-4">
+    <div class="flex items-center space-x-4 !visible">
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-1">
         <a
