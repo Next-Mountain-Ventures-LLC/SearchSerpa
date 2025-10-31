@@ -15,36 +15,10 @@ const { title, description, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
-    <style is:inline>
-      /* Ensure header elements are always visible */
-      header, 
-      header *, 
-      #mobile-menu-toggle, 
-      .text-xl {
-        visibility: visible !important;
-      }
-      
-      header .text-xl, 
-      #mobile-menu-toggle {
-        display: inline-block !important;
-      }
-      
-      #mobile-menu-toggle {
-        display: flex !important;
-      }
-    </style>
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
       <Header />
-      <script is:inline>
-        // Ensure header elements are visible
-        document.addEventListener('DOMContentLoaded', () => {
-          document.querySelectorAll('header *').forEach(el => {
-            el.style.visibility = 'visible';
-          });
-        });
-      </script>
       <main class="flex-auto">
         <slot />
       </main>

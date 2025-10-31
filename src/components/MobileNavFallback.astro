@@ -1,0 +1,33 @@
+---
+// A simple fallback component that ensures the mobile header is visible
+---
+
+<div class="md:hidden flex justify-between items-center p-4 bg-white border-b shadow-sm">
+  <a href="/" class="flex items-center space-x-2">
+    <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
+  </a>
+  
+  <button
+    id="mobile-menu-fallback-toggle"
+    class="p-2 rounded-md bg-primary text-white font-bold"
+    aria-label="Toggle mobile menu"
+  >
+    Menu
+  </button>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const fallbackToggle = document.getElementById('mobile-menu-fallback-toggle');
+    
+    if (fallbackToggle) {
+      fallbackToggle.addEventListener('click', () => {
+        // Try to find the real toggle and click it
+        const realToggle = document.getElementById('mobile-menu-toggle');
+        if (realToggle) {
+          realToggle.click();
+        }
+      });
+    }
+  });
+</script>
