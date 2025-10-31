@@ -2,76 +2,80 @@
 import { buttonVariants } from "@/components/ui/button";
 ---
 
-<!-- Mobile Menu Toggle Button - Will be visible in the header -->
-<button
-  id="mobile-menu-toggle"
-  class="md:hidden p-2 rounded-md hover:bg-muted/50 transition-colors duration-200"
-  aria-label="Toggle mobile menu"
->
-  <!-- Hamburger Icon -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    id="hamburger-icon"
+<!-- Mobile Menu Component - This includes the toggle button and slide-out menu -->
+<div class="md:hidden">
+  <!-- Mobile Menu Toggle Button -->
+  <button
+    id="mobile-menu-toggle"
+    class="p-2 rounded-md hover:bg-muted/50 transition-colors duration-200"
+    aria-label="Toggle mobile menu"
   >
-    <line x1="4" y1="6" x2="20" y2="6"></line>
-    <line x1="4" y1="12" x2="20" y2="12"></line>
-    <line x1="4" y1="18" x2="20" y2="18"></line>
-  </svg>
+    <!-- Hamburger Icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      id="hamburger-icon"
+    >
+      <line x1="4" y1="6" x2="20" y2="6"></line>
+      <line x1="4" y1="12" x2="20" y2="12"></line>
+      <line x1="4" y1="18" x2="20" y2="18"></line>
+    </svg>
 
-  <!-- Close Icon -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="hidden"
-    id="close-icon"
+    <!-- Close Icon -->
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="hidden"
+      id="close-icon"
+    >
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+
+  <!-- Mobile Menu Panel - this will slide out from under the header -->
+  <div
+    id="mobile-menu"
+    class="fixed left-0 top-16 w-full md:hidden h-[calc(100vh-4rem)] bg-background shadow-md z-40 border-t border-border -translate-y-full transition-all duration-300 ease-in-out"
   >
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-</button>
-
-<div
-  id="mobile-menu"
-  class="fixed left-0 top-16 w-full md:hidden h-[calc(100vh-4rem)] bg-background shadow-md z-40 border-t border-border -translate-y-full transition-all duration-300 ease-in-out"
->
-  <div class="container mx-auto px-4 sm:px-6 py-6 flex flex-col h-full">
-    <nav class="space-y-4">
-      <a href="#services" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
-        Services
-      </a>
-      <a href="#why-different" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
-        Why We're Different
-      </a>
-      <a href="#pricing" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
-        Pricing
-      </a>
-      
-      <div class="pt-6 space-y-4">
-        <button id="mobile-audit-btn" class={buttonVariants({ variant: 'default', size: 'lg', class: "w-full" })}>
-          Get Free Audit
-        </button>
-        <a href="https://nxtmt.bloom.io/login" target="_blank" rel="noopener noreferrer" class="block">
-          <button class={buttonVariants({ variant: 'outline', size: 'lg', class: "w-full" })}>
-            Login
-          </button>
+    <div class="container mx-auto px-4 sm:px-6 py-6 flex flex-col h-full">
+      <nav class="space-y-4">
+        <a href="#services" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
+          Services
         </a>
-      </div>
-    </nav>
+        <a href="#why-different" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
+          Why We're Different
+        </a>
+        <a href="#pricing" class="block text-xl py-3 border-b border-border hover:text-primary transition-colors">
+          Pricing
+        </a>
+        
+        <div class="pt-6 space-y-4">
+          <button id="mobile-audit-btn" class={buttonVariants({ variant: 'default', size: 'lg', class: "w-full" })}>
+            Get Free Audit
+          </button>
+          <a href="https://nxtmt.bloom.io/login" target="_blank" rel="noopener noreferrer" class="block">
+            <button class={buttonVariants({ variant: 'outline', size: 'lg', class: "w-full" })}>
+              Login
+            </button>
+          </a>
+        </div>
+      </nav>
+    </div>
   </div>
 </div>
 
