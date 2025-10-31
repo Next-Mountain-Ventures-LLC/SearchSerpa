@@ -1,5 +1,6 @@
 ---
 import { buttonVariants } from "@/components/ui/button";
+import MobileMenu from "@/components/MobileMenu";
 ---
 
 <script>
@@ -7,7 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
   document.addEventListener('DOMContentLoaded', () => {
     // Function to scroll to the site audit section
     const scrollToAuditSection = (e) => {
-      e.preventDefault();
+      if (e) e.preventDefault();
       
       // Get the header height to use as offset
       const headerHeight = document.querySelector('header')?.offsetHeight || 64;
@@ -26,7 +27,9 @@ import { buttonVariants } from "@/components/ui/button";
 
     // Add event listeners to all audit buttons
     document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditSection);
-    document.getElementById('mobile-audit-btn')?.addEventListener('click', scrollToAuditSection);
+    
+    // Expose scrollToAuditSection function to window for React components
+    window.scrollToAuditSection = scrollToAuditSection;
   });
 </script>
 
@@ -76,22 +79,7 @@ import { buttonVariants } from "@/components/ui/button";
           Login
         </a>
       </nav>
-      <div class="md:hidden flex items-center space-x-2">
-        <button
-          id="mobile-audit-btn"
-          class={buttonVariants({ variant: 'default', size: 'sm' })}
-        >
-          Get Free Audit
-        </button>
-        <a
-          href="https://nxtmt.bloom.io/login"
-          target="_blank"
-          rel="noopener noreferrer"
-          class={buttonVariants({ variant: 'outline', size: 'sm' })}
-        >
-          Login
-        </a>
-      </div>
+      <MobileMenu client:load scrollToAuditSection={() => window.scrollToAuditSection()} />
     </div>
   </div>
 </header>
