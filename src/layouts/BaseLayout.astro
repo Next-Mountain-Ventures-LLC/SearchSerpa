@@ -15,6 +15,31 @@ const { title, description, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
+    <style>
+      /* Force header elements to be visible */
+      header, 
+      header *, 
+      #mobile-menu-toggle {
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
+      
+      /* Ensure mobile menu toggle is properly displayed */
+      #mobile-menu-toggle {
+        display: inline-block !important;
+        color: white !important;
+        font-weight: bold !important;
+        position: relative !important;
+        z-index: 1000 !important;
+      }
+      
+      /* Hide on desktop */
+      @media (min-width: 768px) {
+        #mobile-menu-toggle {
+          display: none !important;
+        }
+      }
+    </style>
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
@@ -24,6 +49,37 @@ const { title, description, ogImage } = Astro.props;
       </main>
       <!-- DO NOT REMOVE - Necessary for making visual edits via new.website! -->
       <script src="https://api.new.website/static/new-website.js"></script>
+      
+      <!-- Force visibility of header elements -->
+      <script>
+        window.addEventListener('load', () => {
+          setTimeout(() => {
+            const header = document.querySelector('header');
+            const menuToggle = document.getElementById('mobile-menu-toggle');
+            
+            if (header) {
+              header.style.visibility = 'visible';
+              header.style.opacity = '1';
+              
+              const headerElements = header.querySelectorAll('*');
+              headerElements.forEach(el => {
+                el.style.visibility = 'visible';
+                el.style.opacity = '1';
+              });
+            }
+            
+            if (menuToggle) {
+              menuToggle.style.visibility = 'visible';
+              menuToggle.style.opacity = '1';
+              menuToggle.style.display = 'inline-block';
+              menuToggle.style.color = 'white';
+              menuToggle.style.fontWeight = 'bold';
+              menuToggle.style.zIndex = '1000';
+            }
+          }, 100);
+        });
+      </script>
+      
       <Footer />
     </div>
   </body>
