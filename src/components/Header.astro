@@ -33,38 +33,68 @@ import MobileMenu from "@/components/MobileMenu.astro";
   });
 </script>
 
+<style>
+  /* Force header elements visibility */
+  .header-logo, .header-nav, .mobile-menu-toggle {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+    color: #000 !important; 
+  }
+  
+  .logo-text {
+    color: #000 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+  
+  .logo-highlight {
+    color: #f97316 !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  @media (max-width: 768px) {
+    .mobile-menu-toggle {
+      display: inline-flex !important;
+    }
+  }
+</style>
+
 <header
-  class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
+  class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
+  style="visibility: visible !important; opacity: 1 !important;"
 >
   <div
     class="container flex h-16 items-center justify-between"
+    style="visibility: visible !important; opacity: 1 !important;"
   >
-    <!-- Logo Section (visible on both mobile and desktop) -->
-    <div class="flex gap-6 md:gap-10">
+    <!-- Logo Section with strong visibility overrides -->
+    <div class="header-logo flex gap-6 md:gap-10">
       <a href="/" class="flex items-center space-x-2">
-        <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
+        <span class="logo-text inline-block font-bold text-xl">Search<span class="logo-highlight">Serpa</span></span>
       </a>
     </div>
 
-    <!-- Navigation Section -->
-    <div class="flex items-center space-x-4">
+    <!-- Navigation Section with visibility overrides -->
+    <div class="header-nav flex items-center space-x-4" style="visibility: visible !important; opacity: 1 !important;">
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-1">
         <a
           href="#services"
-          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
         >
           Services
         </a>
         <a
           href="#why-different"
-          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
         >
           Why We're Different
         </a>
         <a
           href="#pricing"
-          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
+          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
         >
           Pricing
         </a>
@@ -84,8 +114,10 @@ import MobileMenu from "@/components/MobileMenu.astro";
         </a>
       </nav>
 
-      <!-- Mobile Menu Toggle Button -->
-      <MobileMenu />
+      <!-- Mobile Menu Toggle Button with forced visibility -->
+      <div class="mobile-menu-toggle" style="visibility: visible !important; opacity: 1 !important; display: inline-flex !important;">
+        <MobileMenu />
+      </div>
     </div>
   </div>
 </header>

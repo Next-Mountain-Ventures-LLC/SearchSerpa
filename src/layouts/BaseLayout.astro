@@ -15,6 +15,33 @@ const { title, description, ogImage } = Astro.props;
 <html lang="en">
   <head>
     <HeadSEO title={title} description={description} ogImage={ogImage} />
+    
+    <style>
+      /* Global style overrides to force header elements visibility */
+      header, 
+      .header-logo, 
+      .header-nav,
+      #mobile-menu-toggle,
+      .logo-text,
+      .logo-highlight,
+      .mobile-menu-toggle {
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+      }
+      
+      /* Force specific colors */
+      .logo-text {
+        color: #000 !important;
+      }
+      .logo-highlight {
+        color: #f97316 !important;
+      }
+      #mobile-menu-toggle {
+        color: #fff !important;
+        background-color: #f97316 !important;
+      }
+    </style>
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
@@ -24,6 +51,63 @@ const { title, description, ogImage } = Astro.props;
       </main>
       <!-- DO NOT REMOVE - Necessary for making visual edits via new.website! -->
       <script src="https://api.new.website/static/new-website.js"></script>
+      
+      <!-- Force visibility of header elements after page load -->
+      <script>
+        // Function to force visibility of header elements
+        function forceHeaderVisibility() {
+          // Query important header elements
+          const header = document.querySelector('header');
+          const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+          const logoText = document.querySelector('.logo-text');
+          
+          // Force header visibility
+          if (header) {
+            header.style.visibility = 'visible';
+            header.style.opacity = '1';
+            
+            // Force all header children to be visible
+            const headerElements = header.querySelectorAll('*');
+            headerElements.forEach(el => {
+              el.style.visibility = 'visible';
+              el.style.opacity = '1';
+              if (el.tagName === 'BUTTON' || el.id === 'mobile-menu-toggle') {
+                el.style.display = 'inline-block';
+              }
+            });
+          }
+          
+          // Specifically target the mobile menu toggle
+          if (mobileMenuToggle) {
+            mobileMenuToggle.style.visibility = 'visible';
+            mobileMenuToggle.style.opacity = '1';
+            mobileMenuToggle.style.display = 'inline-block';
+            mobileMenuToggle.style.color = 'white';
+            mobileMenuToggle.style.backgroundColor = '#f97316';
+            mobileMenuToggle.style.fontWeight = 'bold';
+            mobileMenuToggle.style.zIndex = '999';
+            mobileMenuToggle.style.position = 'relative';
+          }
+          
+          // Ensure logo text is visible
+          if (logoText) {
+            logoText.style.visibility = 'visible';
+            logoText.style.opacity = '1';
+            logoText.style.color = '#000000';
+          }
+        }
+        
+        // Run immediately
+        forceHeaderVisibility();
+        
+        // Also run after a delay to catch any dynamic changes
+        window.addEventListener('load', function() {
+          setTimeout(forceHeaderVisibility, 100);
+          setTimeout(forceHeaderVisibility, 500);
+          setTimeout(forceHeaderVisibility, 1000);
+        });
+      </script>
+      
       <Footer />
     </div>
   </body>
