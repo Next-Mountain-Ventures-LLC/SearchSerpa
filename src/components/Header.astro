@@ -34,45 +34,91 @@ import MobileMenu from "@/components/MobileMenu.astro";
 </script>
 
 <style>
-  /* Force header elements visibility */
-  .header-logo, .header-nav, .mobile-menu-toggle {
+  /* Super aggressive force header elements visibility */
+  header *,
+  .header-logo, 
+  .header-nav, 
+  .mobile-menu-toggle,
+  span.logo-text,
+  span.logo-highlight,
+  #mobile-menu-toggle {
     visibility: visible !important;
     opacity: 1 !important;
+  }
+  
+  /* Force specific display properties */
+  header {
+    display: block !important;
+  }
+  
+  .header-logo, 
+  .header-nav,
+  header a,
+  header a.flex {
     display: flex !important;
-    color: #000 !important; 
   }
   
-  .logo-text {
+  span.logo-text {
     color: #000 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    font-weight: bold !important;
+    display: inline-block !important;
+    font-size: 20px !important;
+    position: relative !important;
+    z-index: 9999 !important;
   }
   
-  .logo-highlight {
+  span.logo-highlight {
     color: #f97316 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    font-weight: bold !important;
+    display: inline !important;
   }
-
+  
+  /* Force mobile toggle button visibility */
   @media (max-width: 768px) {
     .mobile-menu-toggle {
       display: inline-flex !important;
     }
+    
+    #mobile-menu-toggle {
+      display: inline-block !important;
+    }
+    
+    span.logo-text {
+      font-size: 22px !important;
+    }
+  }
+  
+  /* Fix any other potential issues */
+  header svg, header button, header div {
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 </style>
 
 <header
   class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
-  style="visibility: visible !important; opacity: 1 !important;"
+  style="visibility: visible !important; opacity: 1 !important; border: 1px solid red !important;"
 >
   <div
     class="container flex h-16 items-center justify-between"
-    style="visibility: visible !important; opacity: 1 !important;"
+    style="visibility: visible !important; opacity: 1 !important; border: 1px solid blue !important; display: flex !important;"
   >
-    <!-- Logo Section with strong visibility overrides -->
-    <div class="header-logo flex gap-6 md:gap-10">
-      <a href="/" class="flex items-center space-x-2">
-        <span class="logo-text inline-block font-bold text-xl">Search<span class="logo-highlight">Serpa</span></span>
+    <!-- Logo Section with extreme visibility overrides -->
+    <div class="header-logo flex gap-6 md:gap-10" style="visibility: visible !important; opacity: 1 !important; display: flex !important; position: relative !important; z-index: 999 !important;">
+      <a href="/" class="flex items-center space-x-2" style="visibility: visible !important; opacity: 1 !important; display: flex !important;">
+        <!-- Extra wrapper for logo text to ensure it's visible -->
+        <div style="visibility: visible !important; opacity: 1 !important; display: block !important;">
+          <!-- Absolute positioned logo text -->
+          <span 
+            class="logo-text inline-block font-bold text-xl" 
+            style="visibility: visible !important; opacity: 1 !important; display: inline-block !important; position: relative !important; z-index: 999 !important; color: #000 !important; font-weight: bold !important; font-size: 20px !important;"
+          >
+            Search<span 
+              class="logo-highlight"
+              style="visibility: visible !important; opacity: 1 !important; display: inline !important; color: #f97316 !important; font-weight: bold !important;"
+            >Serpa</span>
+          </span>
+        </div>
       </a>
     </div>
 

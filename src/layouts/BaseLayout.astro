@@ -45,6 +45,36 @@ const { title, description, ogImage } = Astro.props;
   </head>
   <body class="bg-background min-h-screen font-sans antialiased">
     <div class="relative flex min-h-screen flex-col">
+      <!-- Absolute positioned logo for mobile view (fallback) -->
+      <div style="
+        position: fixed; 
+        top: 20px; 
+        left: 20px; 
+        z-index: 9999; 
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: block !important;
+        background: transparent !important;
+        pointer-events: none !important;
+      ">
+        <span style="
+          color: #000 !important;
+          font-weight: bold !important;
+          font-size: 20px !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          font-family: 'Montserrat', sans-serif !important;
+        ">
+          Search<span style="
+            color: #f97316 !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-weight: bold !important;
+            font-family: 'Montserrat', sans-serif !important;
+          ">Serpa</span>
+        </span>
+      </div>
+      
       <Header />
       <main class="flex-auto">
         <slot />
@@ -89,11 +119,31 @@ const { title, description, ogImage } = Astro.props;
             mobileMenuToggle.style.position = 'relative';
           }
           
-          // Ensure logo text is visible
+          // Ensure logo text is visible with extra targeting
+          const allLogos = document.querySelectorAll('.logo-text, .logo-highlight');
+          allLogos.forEach(logo => {
+            logo.style.visibility = 'visible';
+            logo.style.opacity = '1';
+            logo.style.display = logo.tagName === 'SPAN' ? 'inline-block' : 'inline';
+            logo.style.position = 'relative';
+            logo.style.zIndex = '9999';
+          });
+          
+          // Also find all spans in the header
+          const headerSpans = document.querySelectorAll('header span');
+          headerSpans.forEach(span => {
+            span.style.visibility = 'visible';
+            span.style.opacity = '1';
+          });
+          
+          // Regular check as well
           if (logoText) {
             logoText.style.visibility = 'visible';
             logoText.style.opacity = '1';
             logoText.style.color = '#000000';
+            logoText.style.display = 'inline-block';
+            logoText.style.position = 'relative';
+            logoText.style.zIndex = '9999';
           }
         }
         
