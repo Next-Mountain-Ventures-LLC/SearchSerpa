@@ -33,114 +33,38 @@ import MobileMenu from "@/components/MobileMenu.astro";
   });
 </script>
 
-<style>
-  /* Super aggressive force header elements visibility */
-  header *,
-  .header-logo, 
-  .header-nav, 
-  .mobile-menu-toggle,
-  span.logo-text,
-  span.logo-highlight,
-  #mobile-menu-toggle {
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-  
-  /* Force specific display properties */
-  header {
-    display: block !important;
-  }
-  
-  .header-logo, 
-  .header-nav,
-  header a,
-  header a.flex {
-    display: flex !important;
-  }
-  
-  span.logo-text {
-    color: #000 !important;
-    font-weight: bold !important;
-    display: inline-block !important;
-    font-size: 20px !important;
-    position: relative !important;
-    z-index: 9999 !important;
-  }
-  
-  span.logo-highlight {
-    color: #f97316 !important;
-    font-weight: bold !important;
-    display: inline !important;
-  }
-  
-  /* Force mobile toggle button visibility */
-  @media (max-width: 768px) {
-    .mobile-menu-toggle {
-      display: inline-flex !important;
-    }
-    
-    #mobile-menu-toggle {
-      display: inline-block !important;
-    }
-    
-    span.logo-text {
-      font-size: 22px !important;
-    }
-  }
-  
-  /* Fix any other potential issues */
-  header svg, header button, header div {
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-</style>
-
 <header
   class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
-  style="visibility: visible !important; opacity: 1 !important; border: 1px solid red !important;"
 >
   <div
     class="container flex h-16 items-center justify-between"
-    style="visibility: visible !important; opacity: 1 !important; border: 1px solid blue !important; display: flex !important;"
   >
-    <!-- Logo Section with extreme visibility overrides -->
-    <div class="header-logo flex gap-6 md:gap-10" style="visibility: visible !important; opacity: 1 !important; display: flex !important; position: relative !important; z-index: 999 !important;">
-      <a href="/" class="flex items-center space-x-2" style="visibility: visible !important; opacity: 1 !important; display: flex !important;">
-        <!-- Extra wrapper for logo text to ensure it's visible -->
-        <div style="visibility: visible !important; opacity: 1 !important; display: block !important;">
-          <!-- Absolute positioned logo text -->
-          <span 
-            class="logo-text inline-block font-bold text-xl" 
-            style="visibility: visible !important; opacity: 1 !important; display: inline-block !important; position: relative !important; z-index: 999 !important; color: #000 !important; font-weight: bold !important; font-size: 20px !important;"
-          >
-            Search<span 
-              class="logo-highlight"
-              style="visibility: visible !important; opacity: 1 !important; display: inline !important; color: #f97316 !important; font-weight: bold !important;"
-            >Serpa</span>
-          </span>
-        </div>
+    <!-- Logo Section -->
+    <div class="flex gap-6 md:gap-10">
+      <a href="/" class="flex items-center space-x-2">
+        <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
       </a>
     </div>
 
-    <!-- Navigation Section with visibility overrides -->
-    <div class="header-nav flex items-center space-x-4" style="visibility: visible !important; opacity: 1 !important;">
+    <!-- Navigation Section -->
+    <div class="flex items-center space-x-4">
       <!-- Desktop Navigation -->
       <nav class="hidden md:flex items-center space-x-1">
         <a
           href="#services"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Services
         </a>
         <a
           href="#why-different"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Why We're Different
         </a>
         <a
           href="#pricing"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Pricing
         </a>
@@ -160,10 +84,8 @@ import MobileMenu from "@/components/MobileMenu.astro";
         </a>
       </nav>
 
-      <!-- Mobile Menu Toggle Button with forced visibility -->
-      <div class="mobile-menu-toggle" style="visibility: visible !important; opacity: 1 !important; display: inline-flex !important;">
-        <MobileMenu />
-      </div>
+      <!-- Mobile Menu Toggle Button -->
+      <MobileMenu />
     </div>
   </div>
 </header>

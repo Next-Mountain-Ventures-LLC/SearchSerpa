@@ -2,38 +2,13 @@
 import { buttonVariants } from "@/components/ui/button";
 ---
 
-<style>
-  /* Force button visibility */
-  #mobile-menu-toggle {
-    visibility: visible !important;
-    opacity: 1 !important;
-    display: inline-block !important;
-    color: white !important;
-    background-color: #f97316 !important; /* Primary orange color */
-    font-weight: bold !important;
-    z-index: 999 !important;
-    position: relative !important;
-    border: none !important;
-    outline: none !important;
-    padding: 8px 16px !important;
-    border-radius: 4px !important;
-  }
-
-  @media (min-width: 768px) {
-    #mobile-menu-toggle {
-      display: none !important;
-    }
-  }
-</style>
-
-<!-- Mobile Menu Button with strong visibility forcing -->
+<!-- Simple Mobile Menu Button -->
 <button
   id="mobile-menu-toggle"
-  class="md:hidden p-2 rounded-md bg-orange-500 text-white font-bold"
+  class="md:hidden p-2 rounded-md bg-primary text-white font-bold"
   aria-label="Toggle mobile menu"
-  style="visibility: visible !important; opacity: 1 !important; display: inline-block !important; z-index: 999 !important; position: relative !important;"
 >
-  <span style="visibility: visible !important; color: white !important; font-weight: bold !important;">MENU</span>
+  Menu
 </button>
 
 <!-- Mobile Menu Panel -->
