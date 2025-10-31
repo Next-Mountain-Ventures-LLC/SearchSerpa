@@ -1,6 +1,6 @@
 ---
 import { buttonVariants } from "@/components/ui/button";
-import MobileMenu from "@/components/MobileMenu";
+import MobileMenuToggle from "@/components/MobileMenuToggle.astro";
 ---
 
 <script>
@@ -79,7 +79,7 @@ import MobileMenu from "@/components/MobileMenu";
           Login
         </a>
       </nav>
-      <MobileMenu client:load scrollToAuditSection={() => window.scrollToAuditSection()} />
+      <MobileMenuToggle />
     </div>
   </div>
 </header>

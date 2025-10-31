@@ -7,6 +7,8 @@ interface MobileMenuProps {
 }
 
 export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
+  // Debug
+  console.log('MobileMenu rendered');
   const [isOpen, setIsOpen] = useState(false);
 
   // Toggle menu open/closed
@@ -52,7 +54,7 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
   }, [isOpen]);
 
   return (
-    <div className="md:hidden">
+    <div className="block md:hidden">
       {/* Menu Toggle Button */}
       <button
         aria-label="Toggle menu"
@@ -71,7 +73,7 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
         className={`fixed inset-0 z-50 bg-background transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         } shadow-lg border-l border-border overflow-y-auto`}
-        style={{ top: '64px' }} // Adjust based on header height
+        style={{ top: '64px', height: 'calc(100vh - 64px)' }} // Adjust based on header height
       >
         <div className="flex flex-col h-full p-6">
           <nav className="flex flex-col space-y-4">

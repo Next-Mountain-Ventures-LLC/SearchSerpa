@@ -1,0 +1,132 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+---
+
+<div class="flex md:hidden items-center">
+  <button
+    id="mobile-menu-toggle"
+    aria-label="Toggle menu"
+    class="p-2 text-foreground hover:bg-muted/50 rounded-md transition-colors focus:outline-none"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon">
+      <line x1="4" x2="20" y1="12" y2="12"></line>
+      <line x1="4" x2="20" y1="6" y2="6"></line>
+      <line x1="4" x2="20" y1="18" y2="18"></line>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="close-icon hidden">
+      <path d="M18 6 6 18"></path>
+      <path d="m6 6 12 12"></path>
+    </svg>
+  </button>
+</div>
+
+<div id="mobile-menu" class="fixed inset-0 z-50 bg-background transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg border-l border-border overflow-y-auto" style="top: 64px; height: calc(100vh - 64px);">
+  <div class="flex flex-col h-full p-6">
+    <nav class="flex flex-col space-y-4">
+      <a
+        href="#services"
+        class="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
+      >
+        Services
+      </a>
+      <a
+        href="#why-different"
+        class="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
+      >
+        Why We're Different
+      </a>
+      <a
+        href="#pricing"
+        class="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
+      >
+        Pricing
+      </a>
+      
+      <div class="mt-8 flex flex-col space-y-4">
+        <button
+          id="mobile-audit-btn"
+          class={buttonVariants({ variant: 'default', size: 'lg' })}
+        >
+          Get Free Audit
+        </button>
+        
+        <a
+          href="https://nxtmt.bloom.io/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full"
+        >
+          <button
+            class={buttonVariants({ variant: 'outline', size: 'lg' })}
+          >
+            Login
+          </button>
+        </a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.querySelector('.menu-icon');
+    const closeIcon = document.querySelector('.close-icon');
+    const navLinks = document.querySelectorAll('#mobile-menu a');
+    const auditBtn = document.getElementById('mobile-audit-btn');
+    
+    let isOpen = false;
+    
+    // Toggle menu function
+    const toggleMenu = () => {
+      isOpen = !isOpen;
+      
+      if (isOpen) {
+        mobileMenu.classList.remove('translate-x-full');
+        mobileMenu.classList.add('translate-x-0');
+        menuIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+      } else {
+        mobileMenu.classList.remove('translate-x-0');
+        mobileMenu.classList.add('translate-x-full');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    };
+    
+    // Toggle menu when button is clicked
+    menuToggle.addEventListener('click', toggleMenu);
+    
+    // Close menu when a link is clicked
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        toggleMenu();
+      });
+    });
+    
+    // Handle audit button click
+    auditBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      
+      // Get the header height to use as offset
+      const headerHeight = document.querySelector('header')?.offsetHeight || 64;
+      const targetElement = document.getElementById('site-audit-section');
+      
+      if (targetElement) {
+        const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+        
+        // Scroll to element with header height offset
+        window.scrollTo({
+          top: elementPosition - headerHeight - 20, // 20px extra padding
+          behavior: 'smooth'
+        });
+      }
+      
+      // Close the mobile menu
+      toggleMenu();
+    });
+  });
+</script>
