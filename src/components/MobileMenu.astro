@@ -47,7 +47,7 @@ import { buttonVariants } from "@/components/ui/button";
 
 <div
   id="mobile-menu"
-  class="fixed left-0 top-16 w-full md:hidden h-[calc(100vh-4rem)] bg-background shadow-md z-40 border-t border-border -translate-y-full transition-transform duration-300"
+  class="fixed left-0 top-0 w-full md:hidden h-screen bg-background shadow-md z-40 border-t border-border -translate-y-full transition-all duration-300 ease-in-out pt-16"
 >
   <div class="container mx-auto px-4 sm:px-6 py-6 flex flex-col h-full">
     <nav class="space-y-4">
@@ -84,44 +84,108 @@ document.addEventListener('DOMContentLoaded', () => {
   const auditBtn = document.getElementById('mobile-audit-btn');
   const mobileLinks = document.querySelectorAll('#mobile-menu a');
   
+  // Enhanced debug logging
+  console.log('%c Mobile Menu Debug', 'background: #333; color: #ff9800; padding: 4px; border-radius: 4px;');
+  console.log('Mobile menu elements found:', {
+    menuToggle: !!menuToggle,
+    mobileMenu: !!mobileMenu,
+    hamburgerIcon: !!hamburgerIcon,
+    closeIcon: !!closeIcon
+  });
+  
+  // Check initial CSS classes on mobile menu
+  if (mobileMenu) {
+    console.log('Initial mobile menu classes:', mobileMenu.className);
+    console.log('Menu position:', {
+      top: mobileMenu.style.top,
+      transform: mobileMenu.style.transform,
+      height: mobileMenu.style.height
+    });
+  }
+  
   // Function to toggle the mobile menu
   function toggleMenu() {
-    const isOpen = mobileMenu.classList.contains('translate-y-0');
-    
-    if (isOpen) {
-      // Close menu
-      mobileMenu.classList.remove('translate-y-0');
-      mobileMenu.classList.add('-translate-y-full');
-      hamburgerIcon.classList.remove('hidden');
-      closeIcon.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    } else {
-      // Open menu
-      mobileMenu.classList.add('translate-y-0');
-      mobileMenu.classList.remove('-translate-y-full');
-      hamburgerIcon.classList.add('hidden');
-      closeIcon.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
+    if (!mobileMenu || !hamburgerIcon || !closeIcon) {
+      console.error('Mobile menu elements not found');
+      return;
     }
+    
+    const isOpen = mobileMenu.classList.contains('translate-y-0');
+    console.log('Toggling menu. Currently open:', isOpen);
+    
+    // For smoother animation, use requestAnimationFrame
+    requestAnimationFrame(() => {
+      if (isOpen) {
+        // Close menu - first hide visually with CSS
+        mobileMenu.classList.remove('translate-y-0'); 
+        mobileMenu.classList.add('-translate-y-full');
+        
+        // Then update the UI elements
+        requestAnimationFrame(() => {
+          hamburgerIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        });
+        
+        console.log('Menu closed');
+      } else {
+        // Open menu - ensure we show menu first
+        mobileMenu.classList.remove('-translate-y-full');
+        mobileMenu.classList.add('translate-y-0');
+        
+        // Then update UI elements
+        requestAnimationFrame(() => {
+          hamburgerIcon.classList.add('hidden');
+          closeIcon.classList.remove('hidden');
+          document.body.classList.add('overflow-hidden');
+        });
+        
+        console.log('Menu opened');
+      }
+    });
   }
   
   // Toggle menu when the button is clicked
-  if (menuToggle) {
-    menuToggle.addEventListener('click', toggleMenu);
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      console.log('%c Menu toggle clicked', 'background: #333; color: #4CAF50; padding: 4px; border-radius: 4px;');
+      
+      // Force repaint before toggle (sometimes helps with animation glitches)
+      void mobileMenu.offsetHeight;
+      
+      toggleMenu();
+      
+      // Log after toggle
+      setTimeout(() => {
+        console.log('Menu classes after toggle:', mobileMenu.className);
+      }, 50);
+    });
   }
   
   // Close menu when links are clicked
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', toggleMenu);
-  });
+  if (mobileMenu) {
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', toggleMenu);
+    });
+  }
   
   // Handle the audit button
-  if (auditBtn) {
+  if (auditBtn && mobileMenu && hamburgerIcon && closeIcon) {
     auditBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      console.log('Audit button clicked - closing menu');
       
-      // Close the mobile menu
-      toggleMenu();
+      // Close the mobile menu - force close regardless of state
+      requestAnimationFrame(() => {
+        mobileMenu.classList.remove('translate-y-0');
+        mobileMenu.classList.add('-translate-y-full');
+        
+        requestAnimationFrame(() => {
+          hamburgerIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          document.body.classList.remove('overflow-hidden');
+        });
       
       // Get the header height for offset
       const headerHeight = document.querySelector('header')?.offsetHeight || 64;
