@@ -2,20 +2,19 @@
 import { buttonVariants } from "@/components/ui/button";
 ---
 
-<!-- Simple Mobile Menu Button with explicit styles -->
+<!-- Mobile Menu Button -->
 <button
   id="mobile-menu-toggle"
-  class="inline-block md:hidden p-2 rounded-md bg-orange-500 text-white hover:bg-orange-600 transition-colors duration-200"
+  class="md:hidden p-2 rounded-md bg-primary text-white transition-colors duration-200"
   aria-label="Toggle mobile menu"
-  style="visibility: visible !important; opacity: 1 !important; color: white !important; font-weight: bold !important; position: relative !important; z-index: 60 !important; display: inline-block !important;"
 >
-  Menu
+  <span class="block">Menu</span>
 </button>
 
-<!-- Mobile Menu Panel - this will slide out from under the header -->
+<!-- Mobile Menu Panel -->
 <div
   id="mobile-menu"
-  class="fixed left-0 top-16 w-full md:hidden h-[calc(100vh-4rem)] bg-background shadow-md z-40 border-t border-border -translate-y-full transition-all duration-300 ease-in-out"
+  class="fixed left-0 top-16 w-full md:hidden h-[calc(100vh-4rem)] bg-background shadow-md z-40 border-t border-border -translate-y-full transition-transform duration-300"
 >
   <div class="container mx-auto px-4 sm:px-6 py-6 flex flex-col h-full">
     <nav class="space-y-4">
@@ -44,92 +43,33 @@ import { buttonVariants } from "@/components/ui/button";
 </div>
 
 <script>
-// Add a script to check for any hidden elements in the header
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    // Find any hidden elements in the header
-    const header = document.querySelector('header');
-    
-    if (header) {
-      // Apply direct inline styles to all header elements
-      const allElements = header.querySelectorAll('*');
-      
-      allElements.forEach(el => {
-        // Apply direct styles to each element to ensure visibility
-        el.style.visibility = 'visible';
-        el.style.opacity = '1';
-        
-        // Log any elements that might be hidden
-        const computedStyle = window.getComputedStyle(el);
-        if (computedStyle.display === 'none' || computedStyle.visibility === 'hidden' || computedStyle.opacity === '0') {
-          console.error('Hidden element found:', el);
-          // Force display
-          el.style.display = el.tagName === 'BUTTON' ? 'inline-block' : 'block';
-          el.style.visibility = 'visible';
-          el.style.opacity = '1';
-        }
-      });
-      
-      // Force the mobile menu button to be visible
-      const menuToggle = document.getElementById('mobile-menu-toggle');
-      if (menuToggle) {
-        menuToggle.style.display = 'inline-block';
-        menuToggle.style.visibility = 'visible';
-        menuToggle.style.opacity = '1';
-        menuToggle.style.position = 'relative';
-        menuToggle.style.zIndex = '1000';
-        menuToggle.style.color = 'white';
-        menuToggle.style.fontWeight = 'bold';
-        
-        console.log('Applied forced styles to menu toggle');
-      }
-    }
-  }, 500);
-});
-
-// Original mobile menu functionality
 document.addEventListener('DOMContentLoaded', () => {
   const menuToggle = document.getElementById('mobile-menu-toggle');
   const mobileMenu = document.getElementById('mobile-menu');
+  // No hamburger/close icons in this implementation
   const auditBtn = document.getElementById('mobile-audit-btn');
   const mobileLinks = document.querySelectorAll('#mobile-menu a');
   
-  // Basic debug logging
-  console.log('Mobile menu elements found:', {
-    menuToggle: !!menuToggle,
-    mobileMenu: !!mobileMenu
-  });
-  
-  // Simple function to toggle the mobile menu
+  // Function to toggle the mobile menu
   function toggleMenu() {
     if (!mobileMenu) {
-      console.error('Mobile menu element not found');
       return;
     }
     
     const isOpen = mobileMenu.classList.contains('translate-y-0');
-    console.log('Toggling menu. Currently open:', isOpen);
     
     if (isOpen) {
       // Close menu
-      mobileMenu.classList.remove('translate-y-0'); 
+      mobileMenu.classList.remove('translate-y-0');
       mobileMenu.classList.add('-translate-y-full');
+      menuToggle.textContent = 'Menu';
       document.body.classList.remove('overflow-hidden');
-      
-      // Change button text
-      if (menuToggle) menuToggle.textContent = 'Menu';
-      
-      console.log('Menu closed');
     } else {
       // Open menu
       mobileMenu.classList.remove('-translate-y-full');
       mobileMenu.classList.add('translate-y-0');
+      menuToggle.textContent = 'Close';
       document.body.classList.add('overflow-hidden');
-      
-      // Change button text
-      if (menuToggle) menuToggle.textContent = 'Close';
-      
-      console.log('Menu opened');
     }
   }
   
@@ -137,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (menuToggle) {
     menuToggle.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Menu toggle clicked');
       toggleMenu();
     });
   }
@@ -153,15 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (auditBtn) {
     auditBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Audit button clicked - closing menu');
       
       // Close the mobile menu
-      mobileMenu.classList.remove('translate-y-0'); 
+      mobileMenu.classList.remove('translate-y-0');
       mobileMenu.classList.add('-translate-y-full');
+      menuToggle.textContent = 'Menu';
       document.body.classList.remove('overflow-hidden');
-      
-      // Change button text back
-      if (menuToggle) menuToggle.textContent = 'Menu';
       
       // Get the header height for offset
       const headerHeight = document.querySelector('header')?.offsetHeight || 64;

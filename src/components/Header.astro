@@ -34,41 +34,37 @@ import MobileMenu from "@/components/MobileMenu.astro";
 </script>
 
 <header
-  class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
-  style="visibility: visible; opacity: 1;"
+  class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
 >
   <div
     class="container flex h-16 items-center justify-between"
-    style="visibility: visible; opacity: 1;"
   >
-    <!-- Logo Section with explicit styles -->
-    <div class="flex gap-6 md:gap-10" style="visibility: visible; opacity: 1;">
-      <a href="/" class="flex items-center space-x-2" style="visibility: visible; opacity: 1;">
-        <span class="inline-block font-bold text-xl text-black" style="visibility: visible; opacity: 1;">
-          Search<span class="text-orange-500" style="visibility: visible; opacity: 1;">Serpa</span>
-        </span>
+    <!-- Logo Section (visible on both mobile and desktop) -->
+    <div class="flex gap-6 md:gap-10">
+      <a href="/" class="flex items-center space-x-2">
+        <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
       </a>
     </div>
 
-    <!-- Navigation Section with explicit styles -->
-    <div class="flex items-center space-x-4" style="visibility: visible; opacity: 1;">
+    <!-- Navigation Section -->
+    <div class="flex items-center space-x-4">
       <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center space-x-1" style="visibility: visible; opacity: 1;">
+      <nav class="hidden md:flex items-center space-x-1">
         <a
           href="#services"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Services
         </a>
         <a
           href="#why-different"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Why We're Different
         </a>
         <a
           href="#pricing"
-          class="text-sm font-medium text-gray-600 px-3 py-2 hover:text-black transition-colors"
+          class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Pricing
         </a>
@@ -88,10 +84,8 @@ import MobileMenu from "@/components/MobileMenu.astro";
         </a>
       </nav>
 
-      <!-- Mobile Menu Toggle Button with explicit styles -->
-      <div style="visibility: visible; opacity: 1;">
-        <MobileMenu />
-      </div>
+      <!-- Mobile Menu Toggle Button -->
+      <MobileMenu />
     </div>
   </div>
 </header>
