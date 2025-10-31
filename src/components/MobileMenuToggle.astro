@@ -20,7 +20,7 @@ import { buttonVariants } from "@/components/ui/button";
   </button>
 </div>
 
-<div id="mobile-menu" class="fixed inset-0 z-50 bg-background transform translate-x-full transition-transform duration-300 ease-in-out shadow-lg border-l border-border overflow-y-auto" style="top: 64px; height: calc(100vh - 64px);">
+<div id="mobile-menu" class="fixed right-0 top-[64px] bottom-0 z-50 w-full max-w-sm bg-background transform translate-x-full transition-all duration-300 ease-in-out shadow-lg border-l border-border overflow-y-auto pointer-events-none opacity-0">
   <div class="flex flex-col h-full p-6">
     <nav class="flex flex-col space-y-4">
       <a
@@ -83,14 +83,16 @@ import { buttonVariants } from "@/components/ui/button";
       isOpen = !isOpen;
       
       if (isOpen) {
-        mobileMenu.classList.remove('translate-x-full');
-        mobileMenu.classList.add('translate-x-0');
+        // Show the menu
+        mobileMenu.classList.remove('translate-x-full', 'opacity-0', 'pointer-events-none');
+        mobileMenu.classList.add('translate-x-0', 'opacity-100', 'pointer-events-auto');
         menuIcon.classList.add('hidden');
         closeIcon.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
       } else {
-        mobileMenu.classList.remove('translate-x-0');
-        mobileMenu.classList.add('translate-x-full');
+        // Hide the menu
+        mobileMenu.classList.remove('translate-x-0', 'opacity-100', 'pointer-events-auto');
+        mobileMenu.classList.add('translate-x-full', 'opacity-0', 'pointer-events-none');
         menuIcon.classList.remove('hidden');
         closeIcon.classList.add('hidden');
         document.body.style.overflow = '';
