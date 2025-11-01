@@ -39,13 +39,17 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
     setIsOpen(false);
   };
 
-  // Prevent body scroll when menu is open
+  // Prevent body scroll when menu is open and ensure smooth animation
   useEffect(() => {
+    // Add a short delay to ensure animation is smooth
     if (isOpen) {
+      // Keep main content fixed while menu is open, but keep header scrollable
       document.body.style.overflow = 'hidden';
     } else {
+      // Allow scrolling when menu is closed
       document.body.style.overflow = '';
     }
+    
     return () => {
       document.body.style.overflow = '';
     };
@@ -56,24 +60,27 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
       {/* Menu Toggle Button */}
       <button
         aria-label="Toggle menu"
-        className="p-2 text-foreground hover:bg-muted/50 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
+        className={`p-2 rounded-md transition-colors duration-200 flex items-center gap-2 ${
+          isOpen ? 'bg-primary/80 text-white' : 'bg-primary text-white'
+        } hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/20`}
         onClick={toggleMenu}
       >
+        <span>{isOpen ? 'Close' : 'Menu'}</span>
         {isOpen ? (
-          <X className="h-6 w-6" />
+          <X className="h-5 w-5" />
         ) : (
-          <Menu className="h-6 w-6" />
+          <Menu className="h-5 w-5" />
         )}
       </button>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Panel - Appears below the header */}
       <div 
-        className={`fixed inset-0 z-50 bg-background transform transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        } shadow-lg border-l border-border overflow-y-auto`}
-        style={{ top: '64px' }} // Adjust based on header height
+        className={`fixed left-0 right-0 w-full z-40 bg-background shadow-md border-t border-border overflow-y-auto transition-all duration-300 ease-in-out ${
+          isOpen ? 'max-h-[calc(100vh-64px)] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        }`}
+        style={{ top: '64px' }} // Position immediately below header
       >
-        <div className="flex flex-col h-full p-6">
+        <div className="flex flex-col h-full p-6 container mx-auto">
           <nav className="flex flex-col space-y-4">
             <a
               href="#services"
