@@ -16,9 +16,15 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
 
   // Close menu when clicking a link
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
+    // Close menu in all cases
+    setIsOpen(false);
+    
+    // If we're on the homepage and there's a hash link
+    if (href.startsWith('/#') && (window.location.pathname === '/' || window.location.pathname === '')) {
       e.preventDefault();
-      const element = document.getElementById(href.substring(1));
+      const sectionId = href.split('#')[1];
+      const element = document.getElementById(sectionId);
+      
       if (element) {
         // Get header height to offset scroll position
         const headerHeight = document.querySelector('header')?.offsetHeight || 64;
@@ -30,13 +36,20 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
         });
       }
     }
-    setIsOpen(false);
+    // Otherwise let the browser handle the navigation
   };
 
   // Handle audit button click
   const handleAuditClick = () => {
-    scrollToAuditSection();
     setIsOpen(false);
+    
+    // If on the homepage, scroll to the audit section
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+      scrollToAuditSection();
+    } else {
+      // Otherwise, navigate to homepage with hash
+      window.location.href = '/#site-audit-section';
+    }
   };
 
   // Prevent body scroll when menu is open and ensure smooth animation
@@ -83,25 +96,31 @@ export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
         <div className="flex flex-col h-full p-6 container mx-auto">
           <nav className="flex flex-col space-y-4">
             <a
-              href="#services"
+              href="/#services"
               className="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
-              onClick={(e) => handleLinkClick(e, '#services')}
+              onClick={(e) => handleLinkClick(e, '/#services')}
             >
               Services
             </a>
             <a
-              href="#why-different"
+              href="/#why-different"
               className="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
-              onClick={(e) => handleLinkClick(e, '#why-different')}
+              onClick={(e) => handleLinkClick(e, '/#why-different')}
             >
               Why We're Different
             </a>
             <a
-              href="#pricing"
+              href="/#pricing"
               className="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
-              onClick={(e) => handleLinkClick(e, '#pricing')}
+              onClick={(e) => handleLinkClick(e, '/#pricing')}
             >
               Pricing
+            </a>
+            <a
+              href="/blog"
+              className="text-xl font-medium py-4 border-b border-border hover:text-primary hover:pl-2 transition-all duration-200"
+            >
+              Blog
             </a>
             
             <div className="mt-8 flex flex-col space-y-4">

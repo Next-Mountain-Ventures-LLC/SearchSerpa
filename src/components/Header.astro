@@ -4,15 +4,15 @@ import MobileMenu from "@/components/MobileMenu";
 ---
 
 <script>
-  // Add event listeners for audit buttons
+  // Add event listeners for navigation
   document.addEventListener('DOMContentLoaded', () => {
-    // Function to scroll to the site audit section
-    const scrollToAuditSection = (e) => {
+    // Function to scroll to a section by ID
+    const scrollToSection = (sectionId, e) => {
       if (e) e.preventDefault();
       
       // Get the header height to use as offset
       const headerHeight = document.querySelector('header')?.offsetHeight || 64;
-      const targetElement = document.getElementById('site-audit-section');
+      const targetElement = document.getElementById(sectionId);
       
       if (targetElement) {
         const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
@@ -25,11 +25,44 @@ import MobileMenu from "@/components/MobileMenu";
       }
     };
 
-    // Add event listeners to all audit buttons
-    document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditSection);
+    // Function to handle home page hash navigation
+    const handleNavigation = () => {
+      // Check if we're on the homepage
+      const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
+      
+      // If we're on the homepage and there's a hash in the URL
+      if (isHomePage && window.location.hash) {
+        // Get the section ID from the hash (remove the #)
+        const sectionId = window.location.hash.substring(1);
+        
+        // Scroll to the section after a small delay to ensure the page is loaded
+        setTimeout(() => {
+          scrollToSection(sectionId);
+        }, 100);
+      }
+    };
+
+    // Run once when the page loads
+    handleNavigation();
+
+    // Add event listener for when the hash changes
+    window.addEventListener('hashchange', handleNavigation);
     
-    // Expose scrollToAuditSection function to window for React components
-    window.scrollToAuditSection = scrollToAuditSection;
+    // Expose scrollToSection function to window for React components
+    window.scrollToAuditSection = () => scrollToSection('site-audit-section');
+
+    // Add click handlers to all header navigation links that point to homepage sections
+    document.querySelectorAll('header nav a[href^="/#"]').forEach(link => {
+      link.addEventListener('click', (e) => {
+        // If we're already on the homepage
+        if (window.location.pathname === '/' || window.location.pathname === '') {
+          e.preventDefault();
+          const sectionId = link.getAttribute('href').split('#')[1];
+          scrollToSection(sectionId);
+        }
+        // Otherwise, let the link navigate normally to homepage with hash
+      });
+    });
   });
 </script>
 
@@ -47,29 +80,29 @@ import MobileMenu from "@/components/MobileMenu";
     <div class="flex flex-1 items-center justify-end space-x-4">
       <nav class="hidden md:flex items-center space-x-1">
         <a
-          href="#services"
+          href="/#services"
           class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Services
         </a>
         <a
-          href="#why-different"
+          href="/#why-different"
           class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Why We're Different
         </a>
         <a
-          href="#pricing"
+          href="/#pricing"
           class="text-sm font-medium text-muted-foreground px-3 py-2 hover:text-foreground transition-colors"
         >
           Pricing
         </a>
-        <button
-          id="nav-audit-btn"
+        <a
+          href="/#site-audit-section"
           class={buttonVariants({ variant: 'default' })}
         >
           Get Free Audit
-        </button>
+        </a>
         <a
           href="https://nxtmt.bloom.io/login"
           target="_blank"
