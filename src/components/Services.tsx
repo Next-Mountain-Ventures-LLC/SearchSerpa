@@ -147,14 +147,80 @@ export default function Services() {
           
           {/* Bloom Form */}
           <div id="site-audit-form" className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
-            <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
-              <script dangerouslySetInnerHTML={{
-                __html: `
-                  window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
-                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){bloomScript.src="https://code.bloom.io/widget.js?v="+t,document.head.appendChild(bloomScript)})}
-                `
-              }} />
-            </div>
+            <form 
+              className="space-y-6" 
+              method="POST" 
+              action="https://api.new.website/api/submit-form/"
+              encType="multipart/form-data"
+            >
+              <input type="hidden" name="form_name" value="Site Audit Request" />
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-sm font-medium">
+                    Your Name
+                  </label>
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    required
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium">
+                    Email Address
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="website" className="block text-sm font-medium">
+                  Your Website URL
+                </label>
+                <input
+                  id="website"
+                  name="website"
+                  type="url"
+                  required
+                  placeholder="https://example.com"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <label htmlFor="message" className="block text-sm font-medium">
+                  Any specific SEO concerns or goals?
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={4}
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
+                ></textarea>
+              </div>
+              
+              <div>
+                <button
+                  type="submit"
+                  className="w-full bg-primary text-white px-4 py-3 rounded-md font-medium hover:bg-primary/90 transition-colors flex items-center justify-center"
+                >
+                  Request Your Free SEO Audit
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </div>
+              <p className="text-sm text-muted-foreground text-center">
+                You'll receive a detailed analysis within one business day
+              </p>
+            </form>
           </div>
         </div>
       </div>
