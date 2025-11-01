@@ -1,6 +1,5 @@
 ---
 import { buttonVariants } from "@/components/ui/button";
-import MobileMenu from "@/components/MobileMenu.astro";
 ---
 
 <script>
@@ -8,7 +7,7 @@ import MobileMenu from "@/components/MobileMenu.astro";
   document.addEventListener('DOMContentLoaded', () => {
     // Function to scroll to the site audit section
     const scrollToAuditSection = (e) => {
-      if (e) e.preventDefault();
+      e.preventDefault();
       
       // Get the header height to use as offset
       const headerHeight = document.querySelector('header')?.offsetHeight || 64;
@@ -27,28 +26,22 @@ import MobileMenu from "@/components/MobileMenu.astro";
 
     // Add event listeners to all audit buttons
     document.getElementById('nav-audit-btn')?.addEventListener('click', scrollToAuditSection);
-    
-    // Expose scrollToAuditSection function to window for React components
-    window.scrollToAuditSection = scrollToAuditSection;
+    document.getElementById('mobile-audit-btn')?.addEventListener('click', scrollToAuditSection);
   });
 </script>
 
 <header
-  class="bg-white sticky top-0 z-50 w-full border-b shadow-sm"
+  class="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur"
 >
   <div
-    class="container flex h-16 items-center justify-between"
+    class="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0"
   >
-    <!-- Logo Section -->
     <div class="flex gap-6 md:gap-10">
       <a href="/" class="flex items-center space-x-2">
-        <span class="inline-block font-bold text-xl text-black">Search<span class="text-primary">Serpa</span></span>
+        <span class="inline-block font-bold text-xl text-foreground">Search<span class="text-primary">Serpa</span></span>
       </a>
     </div>
-
-    <!-- Navigation Section -->
-    <div class="flex items-center space-x-4">
-      <!-- Desktop Navigation -->
+    <div class="flex flex-1 items-center justify-end space-x-4">
       <nav class="hidden md:flex items-center space-x-1">
         <a
           href="#services"
@@ -83,9 +76,22 @@ import MobileMenu from "@/components/MobileMenu.astro";
           Login
         </a>
       </nav>
-
-      <!-- Mobile Menu Toggle Button -->
-      <MobileMenu />
+      <div class="md:hidden flex items-center space-x-2">
+        <button
+          id="mobile-audit-btn"
+          class={buttonVariants({ variant: 'default', size: 'sm' })}
+        >
+          Get Free Audit
+        </button>
+        <a
+          href="https://nxtmt.bloom.io/login"
+          target="_blank"
+          rel="noopener noreferrer"
+          class={buttonVariants({ variant: 'outline', size: 'sm' })}
+        >
+          Login
+        </a>
+      </div>
     </div>
   </div>
 </header>
