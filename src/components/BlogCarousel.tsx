@@ -42,8 +42,7 @@ export default function BlogCarousel() {
           setPosts(validPosts);
         }
       } catch (err) {
-        console.error('Error fetching posts:', err);
-        // Fallback to sample posts
+        // API failed - use fallback posts silently
         setPosts(getFallbackPosts());
       } finally {
         setLoading(false);
