@@ -5,7 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  site: process.env.SITE_URL || "http://localhost:4321",
+  site: "https://searchserpa.com",
   integrations: [react()],
   vite: {
     plugins: [tailwindcss()],
