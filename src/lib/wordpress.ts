@@ -322,19 +322,18 @@ export async function getRelatedPosts(post: WpPost, limit: number = 3): Promise<
   if (!post.categories || post.categories.length === 0) {
     return [];
   }
-  
+
   try {
     const relatedPosts = await getPosts({
       categories: post.categories,
       perPage: limit + 1 // Get one extra to filter out current post
     });
-    
+
     // Filter out the current post and limit to the requested number
     return relatedPosts
       .filter(relatedPost => relatedPost.id !== post.id)
       .slice(0, limit);
   } catch (error) {
-    console.error('Error fetching related posts:', error);
     return [];
   }
 }
