@@ -55,7 +55,7 @@ export default function Hero() {
                 </Button>
                 
                 <Button size="lg" variant="outline" className="text-base" onClick={() => window.location.href = "#services"}>
-                  View Our Services <ArrowRight className="ml-2 h-4 w-4" />
+                  View Our Services <ArrowRight className="ml-2 h-4 w-4 animate-arrow-slide" />
                 </Button>
               </div>
             </div>
