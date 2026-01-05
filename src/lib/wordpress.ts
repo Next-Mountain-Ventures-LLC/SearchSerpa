@@ -119,30 +119,30 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
  */
 async function fetchWithCache<T>(url: string): Promise<T> {
   const now = Date.now();
-  
+
   // Check if we have a valid cached response
   if (apiCache[url] && now - apiCache[url].timestamp < CACHE_DURATION) {
     return apiCache[url].data as T;
   }
-  
+
   try {
     const response = await fetch(url);
-    
+
     if (!response.ok) {
       throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
     }
-    
+
     const data = await response.json();
-    
+
     // Cache the response
     apiCache[url] = {
       data,
       timestamp: now
     };
-    
+
     return data as T;
   } catch (error) {
-    console.error('Error fetching from WordPress API:', error);
+    // Silently fail - fallbacks will handle this
     throw error;
   }
 }
