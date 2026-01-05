@@ -62,13 +62,12 @@ async function storeHash(hash: string): Promise<void> {
 // Trigger a rebuild
 async function triggerRebuild() {
   // This would be replaced with actual build command
-  // For example, using Vercel's deploy hook or similar
+  // For example, calling your hosting platform's API or webhook
   console.log('🔄 Triggering rebuild due to content changes');
-  
+
   // In a real environment, you would call your hosting platform's API
-  // Example for Vercel:
-  // await fetch('https://api.vercel.com/v1/integrations/deploy/prj_your_project_id/your_deploy_hook', { method: 'POST' });
-  
+  // or trigger a GitHub Actions workflow to rebuild the site
+
   return true;
 }
 
