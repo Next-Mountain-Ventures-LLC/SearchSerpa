@@ -276,7 +276,6 @@ export async function getCategories(): Promise<WpCategory[]> {
   try {
     return await fetchWithCache<WpCategory[]>(`${WP_API_URL}/categories?per_page=100`);
   } catch (error) {
-    console.error('Error fetching categories:', error);
     return [];
   }
 }
@@ -288,7 +287,6 @@ export async function getTags(): Promise<WpTag[]> {
   try {
     return await fetchWithCache<WpTag[]>(`${WP_API_URL}/tags?per_page=100`);
   } catch (error) {
-    console.error('Error fetching tags:', error);
     return [];
   }
 }
@@ -298,11 +296,10 @@ export async function getTags(): Promise<WpTag[]> {
  */
 export async function getMediaById(mediaId: number): Promise<WpMedia | null> {
   if (!mediaId) return null;
-  
+
   try {
     return await fetchWithCache<WpMedia>(`${WP_API_URL}/media/${mediaId}`);
   } catch (error) {
-    console.error('Error fetching media:', error);
     return null;
   }
 }
