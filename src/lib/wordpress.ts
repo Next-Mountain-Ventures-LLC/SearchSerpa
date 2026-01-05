@@ -252,7 +252,7 @@ export async function getSearchSerpaPosts(params: Omit<GetPostsParams, 'categori
       categories: [categoryId]
     });
   } catch (error) {
-    console.error('Error fetching SearchSerpa posts:', error);
+    // Silently return empty - component will use fallbacks
     return [];
   }
 }
