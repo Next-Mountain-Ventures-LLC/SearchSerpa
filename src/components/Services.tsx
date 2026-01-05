@@ -21,7 +21,9 @@ export default function Services() {
           bloomScript.src = "https://code.bloom.io/widget.js?v=" + version;
           document.head.appendChild(bloomScript);
         })
-        .catch(error => console.error('Error loading Bloom script:', error));
+        .catch(() => {
+          // Silently fail if Bloom is unavailable - form still has DIV for manual submission
+        });
     }
   }, []);
 
