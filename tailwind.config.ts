@@ -4,6 +4,15 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
+      animation: {
+        'arrow-slide': 'arrow-slide 2s ease-in-out infinite',
+      },
+      keyframes: {
+        'arrow-slide': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '50%': { transform: 'translateX(4px)' },
+        },
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
