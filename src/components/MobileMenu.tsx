@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
 
-interface MobileMenuProps {
-  scrollToAuditSection: () => void;
-}
-
-export default function MobileMenu({ scrollToAuditSection }: MobileMenuProps) {
+export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
   // Toggle menu open/closed
