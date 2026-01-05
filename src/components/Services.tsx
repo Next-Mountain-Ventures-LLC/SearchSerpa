@@ -167,14 +167,7 @@ export default function Services() {
           
           {/* Bloom Form */}
           <div id="site-audit-form" className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md border border-border">
-            <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}>
-              <script dangerouslySetInnerHTML={{
-                __html: `
-                  window.bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
-                  if(void 0===bloomScript){var bloomScript=document.createElement("script");bloomScript.async=!0,fetch("https://code.bloom.io/version?t="+Date.now()).then(function(t){return t.text()}).then(function(t){bloomScript.src="https://code.bloom.io/widget.js?v="+t,document.head.appendChild(bloomScript)})}
-                `
-              }} />
-            </div>
+            <div data-bloom-form-id="kxe70vo5q9o4z" style={{width:'100%'}}></div>
           </div>
         </div>
       </div>
