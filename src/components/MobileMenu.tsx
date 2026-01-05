@@ -38,10 +38,13 @@ export default function MobileMenu() {
   // Handle audit button click
   const handleAuditClick = () => {
     setIsOpen(false);
-    
+
     // If on the homepage, scroll to the audit section
     if (window.location.pathname === '/' || window.location.pathname === '') {
-      scrollToAuditSection();
+      // Use the function exposed by Header.astro script
+      if (typeof (window as any).scrollToAuditSection === 'function') {
+        (window as any).scrollToAuditSection();
+      }
     } else {
       // Otherwise, navigate to homepage with hash
       window.location.href = '/#site-audit-section';
