@@ -5,6 +5,26 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from './ui/button';
 
 export default function Services() {
+  // Load Bloom form script after component mounts
+  useEffect(() => {
+    // Set up Bloom settings
+    (window as any).bloomSettings = { userId: "38kd520pldwvr", profileId: "kxe70rqrq7o4z" };
+
+    // Load the Bloom widget script
+    if (typeof (window as any).bloomScript === 'undefined') {
+      const bloomScript = document.createElement("script");
+      bloomScript.async = true;
+
+      fetch("https://code.bloom.io/version?t=" + Date.now())
+        .then(response => response.text())
+        .then(version => {
+          bloomScript.src = "https://code.bloom.io/widget.js?v=" + version;
+          document.head.appendChild(bloomScript);
+        })
+        .catch(error => console.error('Error loading Bloom script:', error));
+    }
+  }, []);
+
   return (
     <section id="services" className="py-20 relative overflow-hidden">
       {/* Background elements */}
