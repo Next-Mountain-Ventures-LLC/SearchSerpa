@@ -169,37 +169,37 @@ export async function getPosts(params: GetPostsParams = {}): Promise<WpPost[]> {
     search,
     _embed = true
   } = params;
-  
+
   // Build query parameters
   const queryParams = new URLSearchParams({
     page: page.toString(),
     per_page: perPage.toString(),
   });
-  
+
   if (_embed) {
     queryParams.set('_embed', 'wp:featuredmedia,wp:term,author');
   }
-  
+
   if (categories && categories.length > 0) {
     queryParams.set('categories', categories.join(','));
   }
-  
+
   if (tags && tags.length > 0) {
     queryParams.set('tags', tags.join(','));
   }
-  
+
   if (slug) {
     queryParams.set('slug', slug);
   }
-  
+
   if (search) {
     queryParams.set('search', search);
   }
-  
+
   try {
     return await fetchWithCache<WpPost[]>(`${WP_API_URL}/posts?${queryParams.toString()}`);
   } catch (error) {
-    console.error('Error fetching posts:', error);
+    // Silently return empty array - fallbacks will handle this
     return [];
   }
 }
