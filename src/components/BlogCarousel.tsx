@@ -6,13 +6,16 @@ export default function BlogCarousel() {
   const [posts, setPosts] = useState<WpPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
-  
+
   // Number of slides to show based on viewport width
   const [slidesToShow, setSlidesToShow] = useState(3);
-  
-  // Update slidesToShow based on window width
+
+  // Update slidesToShow based on window width and mark as mounted
   useEffect(() => {
+    setIsMounted(true);
+
     const handleResize = () => {
       if (window.innerWidth < 640) {
         setSlidesToShow(1);
@@ -25,10 +28,10 @@ export default function BlogCarousel() {
 
     // Initial call
     handleResize();
-    
+
     // Add event listener
     window.addEventListener('resize', handleResize);
-    
+
     // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
