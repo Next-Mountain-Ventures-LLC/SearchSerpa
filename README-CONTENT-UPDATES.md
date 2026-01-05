@@ -54,19 +54,6 @@ To ensure the content check runs at exactly 5:00am and 5:00pm daily, set up a CR
 0 5,17 * * * curl -X GET https://yourdomain.com/api/scheduledRebuild
 ```
 
-### With Vercel:
-
-1. Go to your project settings
-2. Navigate to the "Cron Jobs" section
-3. Create two new cron jobs:
-   - Name: "Morning Content Check"
-     - Schedule: `0 5 * * *`
-     - HTTP Method: GET
-     - Path: `/api/scheduledRebuild`
-   - Name: "Evening Content Check"
-     - Schedule: `0 17 * * *`
-     - HTTP Method: GET
-     - Path: `/api/scheduledRebuild`
 
 ## Manual Testing
 
