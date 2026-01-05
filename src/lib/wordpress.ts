@@ -214,29 +214,29 @@ export async function getAllPosts(): Promise<WpPost[]> {
     let allPosts: WpPost[] = [];
     let page = 1;
     let hasMorePosts = true;
-    
+
     while (hasMorePosts) {
       const posts = await getPosts({
         perPage: 100,
         page: page,
       });
-      
+
       if (posts.length === 0) {
         hasMorePosts = false;
       } else {
         allPosts = [...allPosts, ...posts];
         page++;
       }
-      
+
       // Safety check to prevent infinite loops
       if (page > 10) {
         hasMorePosts = false;
       }
     }
-    
+
     return allPosts;
   } catch (error) {
-    console.error('Error fetching all posts:', error);
+    // Silently return empty - fallbacks will be used
     return [];
   }
 }
